@@ -2,27 +2,22 @@ apply plugin: 'java'
 
 println "PROJECT=" + project.name
 
-repositories {
-  mavenCentral()
-}
+repositories { mavenCentral() }
 
 dependencies {
 
-  compile 'org.springframework.data:spring-data-mongodb:1.2.3.RELEASE'
-  compile 'cglib:cglib:2.2.2'
+	compile 'org.springframework:spring-core:3.2.3.RELEASE'
+	compile 'org.springframework:spring-webmvc:3.2.3.RELEASE'
 
-  compile 'org.springframework:spring-core:3.2.3.RELEASE'
+	compile 'org.slf4j:slf4j-api:1.7.5'
+	runtime 'org.slf4j:slf4j-jdk14:1.7.5'
 
-  compile 'org.slf4j:slf4j-api:1.7.5'
-  runtime 'org.slf4j:slf4j-jdk14:1.7.5'
-
-  testCompile 'org.springframework:spring-test:3.2.3.RELEASE'
-  testCompile 'junit:junit:4.+'
-  testCompile "org.mockito:mockito-all:1.9.5"
-
+	testCompile 'org.springframework:spring-test:3.2.3.RELEASE'
+	testCompile 'junit:junit:4.+'
+	testCompile "org.mockito:mockito-all:1.9.5"
+	
+	testCompile 'javax.servlet:servlet-api:2.5'
 }
 
-task wrapper(type: Wrapper) {
-  gradleVersion = '1.6'
-}
+task wrapper(type: Wrapper) { gradleVersion = '1.6' }
 
