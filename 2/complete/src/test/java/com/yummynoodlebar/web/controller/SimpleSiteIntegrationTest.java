@@ -1,6 +1,7 @@
 package com.yummynoodlebar.web.controller;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
 
@@ -8,11 +9,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.test.web.servlet.MockMvc;
 
-public class SiteSimpleIntegrationTest {
+public class SimpleSiteIntegrationTest {
 
 	MockMvc mockMvc;
 
-	SiteController controller = new SiteController();
+	SimpleSiteController controller = new SimpleSiteController();
 
 	@Before
 	public void setup() {
@@ -21,14 +22,17 @@ public class SiteSimpleIntegrationTest {
 
 	@Test
 	public void thatTextReturned() throws Exception {
-		mockMvc.perform(get("/")).andExpect(content().string("Hello World"));
+		mockMvc.perform(get("/simple"))
+		.andDo(print())
+		.andExpect(content().string("Yummy Noodles"));
 
 	}
 
 	@Test
-	public void thatHWReturned() throws Exception {
-		mockMvc.perform(get("/hw")).andExpect(
-				content().string("Hello World baby"));
+	public void thatExpectedTextReturned() throws Exception {
+		mockMvc.perform(get("/simple/directly"))
+		.andDo(print())
+		.andExpect(content().string("Yummy Noodle World"));
 
 	}
 
