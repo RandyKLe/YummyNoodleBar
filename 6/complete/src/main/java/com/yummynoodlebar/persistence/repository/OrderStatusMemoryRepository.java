@@ -10,7 +10,8 @@ public class OrderStatusMemoryRepository implements OrderStatusRepository {
 
   @Override
   public OrderStatus save(OrderStatus order) {
-    return orderStatuses.put(order.getId(), order);
+    orderStatuses.put(order.getId(), order);
+    return order;
   }
 
   @Override

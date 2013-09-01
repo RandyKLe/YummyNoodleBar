@@ -1,28 +1,70 @@
+apply plugin: 'war'
+apply plugin: 'tomcat'
 apply plugin: 'java'
+apply plugin: 'propdeps'
+apply plugin: 'propdeps-maven'
+apply plugin: 'propdeps-idea'
+apply plugin: 'propdeps-eclipse'
 
 println "PROJECT=" + project.name
 
+buildscript {
+  repositories {
+	mavenCentral()
+	maven {
+	  url "http://download.java.net/maven/2"
+	}
+	maven { url 'http://repo.springsource.org/plugins-release' }
+  }
+
+  dependencies {
+	classpath 'org.gradle.api.plugins:gradle-tomcat-plugin:0.9.8'
+	classpath 'org.springframework.build.gradle:propdeps-plugin:0.0.1'
+  }
+}
+
+
 repositories {
   mavenCentral()
+  //TODOCUMENT
+  maven { url 'http://repo.springsource.org/milestone/'}
 }
 
 dependencies {
+	def tomcatVersion = '7.0.42'
+	tomcat "org.apache.tomcat.embed:tomcat-embed-core:${tomcatVersion}",
+			"org.apache.tomcat.embed:tomcat-embed-logging-juli:${tomcatVersion}"
+	tomcat("org.apache.tomcat.embed:tomcat-embed-jasper:${tomcatVersion}") {
+	  exclude group: 'org.eclipse.jdt.core.compiler', module: 'ecj'
+	}
 
-  compile 'org.springframework.data:spring-data-mongodb:1.2.3.RELEASE'
-  compile 'cglib:cglib:2.2.2'
+  compile 'javax.validation:validation-api:1.1.0.Final'
+  compile 'org.hibernate:hibernate-validator:5.0.1.Final'
 
-  compile 'org.springframework:spring-core:3.2.3.RELEASE'
+	compile 'org.springframework:spring-core:3.2.3.RELEASE'
+	compile 'org.springframework:spring-webmvc:3.2.3.RELEASE'
+
+  //TODOCUMENT
+  compile 'org.springframework.security:spring-security-web:3.2.0.M2'
+  compile 'org.springframework.security:spring-security-core:3.2.0.M2'
+  compile 'org.springframework.security:spring-security-config:3.2.0.M2'
+
 
   compile 'org.slf4j:slf4j-api:1.7.5'
-  runtime 'org.slf4j:slf4j-jdk14:1.7.5'
+	runtime 'org.slf4j:slf4j-log4j12:1.7.5'
+	
+	compile 'opensymphony:sitemesh:2.4.2'
+	compile 'javax.servlet:jstl:1.2'
 
-  testCompile 'org.springframework:spring-test:3.2.3.RELEASE'
-  testCompile 'junit:junit:4.+'
-  testCompile "org.mockito:mockito-all:1.9.5"
-
+	testCompile 'org.springframework:spring-test:3.2.3.RELEASE'
+	testCompile 'junit:junit:4.10'
+	testCompile "org.mockito:mockito-core:1.9.5"
+	testCompile "org.hamcrest:hamcrest-library:1.3"
+	
+	provided 'javax.servlet:javax.servlet-api:3.0.1'
 }
 
-task wrapper(type: Wrapper) {
-  gradleVersion = '1.6'
-}
+task wrapper(type: Wrapper) { gradleVersion = '1.6' }
+
+tomcatRunWar.contextPath = ''
 

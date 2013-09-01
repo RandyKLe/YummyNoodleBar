@@ -4,7 +4,7 @@ import com.yummynoodlebar.persistence.domain.MenuItem;
 
 public interface MenuItemRepository {
 
-  MenuItem save(MenuItem order);
+  MenuItem save(MenuItem item);
 
   void delete(String key);
 
