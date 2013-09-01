@@ -16,7 +16,10 @@
 		<p>
 			<a class="btn btn-primary btn-large"
 				href="http://www.simplicityitself.com/"><spring:message
-					code="message.home.learnMore" /></a>
+					code="message.home.learnMore" /></a> <a
+				class="btn btn-primary btn-large"
+				href="<spring:url value="/showBasket" htmlEscape="true" />">Look
+				in ur basket</a>
 		</p>
 
 	</div>
@@ -25,7 +28,7 @@
 		<div class="span8">
 
 			<div id="message" class="alert alert-info">
-				<spring:message code="message.home.instructions" />
+				<spring:message code="message.home.instructions" /> Number of items in basket: ${basket.size}
 			</div>
 
 			<table class="table table-striped">
@@ -35,23 +38,38 @@
 						<th>Name</th>
 						<th>Cost</th>
 						<th>Mins to prepare</th>
+						<th>Action</th>
 					</tr>
 				</thead>
 				<tbody>
 
-					<c:forEach var="item" items="${menuItems}">
-
+					<c:forEach var="item" items="${menuItems}" varStatus="status">
+						<c:set var="itemFormId" value="item${status.index}"/>
 						<tr>
 							<td>${item.id}</td>
 							<td>${item.name}</td>
 							<td>${item.cost}</td>
 							<td>${item.minutesToPrepare}</td>
+							<td>
+							<c:url var="addToBasketUrl" value="/addToBasket/${item.id}" />
+							<form id="${itemFormId}" action="${addToBasketUrl}" method="POST">
+								<input id="id" name="id" type="hidden" value="${item.id}" />
+								<input id="name" name="name" type="hidden" value="${item.name}" />
+								<input id="cost" name="cost" type="hidden" value="${item.cost}" />
+								<input id="minutesToPrepare" name="minutesToPrepare" type="hidden" value="${item.minutesToPrepare}" />
+							</form>
+							<a href="javascript:document.forms['${itemFormId}'].submit();">Add</a>
+							</td>
+							
+							
 						</tr>
 
 					</c:forEach>
 
 				</tbody>
 			</table>
+
+			
 
 		</div>
 	</div>

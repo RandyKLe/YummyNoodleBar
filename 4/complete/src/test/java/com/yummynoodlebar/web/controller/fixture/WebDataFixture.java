@@ -7,6 +7,7 @@ import java.util.UUID;
 
 import com.yummynoodlebar.events.menu.AllMenuItemsEvent;
 import com.yummynoodlebar.events.menu.MenuItemDetails;
+import com.yummynoodlebar.web.domain.MenuItem;
 
 public class WebDataFixture {
 	
@@ -30,6 +31,10 @@ public class WebDataFixture {
 	
 	public static MenuItemDetails standardMenuItemDetails() {
 		return standardMenuItemDetails(NAME);
+	}
+	
+	public static MenuItem standardWebMenuItem () {
+		return MenuItem.fromMenuDetails(standardMenuItemDetails());
 	}
 
 }

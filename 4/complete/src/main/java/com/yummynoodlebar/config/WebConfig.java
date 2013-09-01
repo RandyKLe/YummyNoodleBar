@@ -19,7 +19,7 @@ import org.springframework.web.servlet.view.JstlView;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages = {"com.yummynoodlebar.web.controller"})
+@ComponentScan(basePackages = {"com.yummynoodlebar.web.controller","com.yummynoodlebar.web.domain"})
 public class WebConfig extends WebMvcConfigurerAdapter {
 	
 	@Override

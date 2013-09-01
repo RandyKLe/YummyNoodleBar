@@ -8,7 +8,6 @@ import static org.hamcrest.Matchers.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -26,6 +25,7 @@ public class WebDomainIntegrationTest {
 	private static final String STANDARD = "Yummy Noodles";
 	private static final String CHEF_SPECIAL = "Special Yummy Noodles";
 	private static final String LOW_CAL = "Low cal Yummy Noodles";
+	public static final String FORWARDED_URL = "/WEB-INF/views/home.jsp";
 	
 	private MockMvc mockMvc;
 	
@@ -37,13 +37,20 @@ public class WebDomainIntegrationTest {
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 	}
 	
+	
+	@SuppressWarnings("unchecked")
 	@Test
-	public void thatTextReturned() throws Exception {
+	public void getHome() throws Exception {
 		mockMvc.perform(get("/"))
 		.andDo(print())
-		.andExpect(content().string(containsString(STANDARD)))
-		.andExpect(content().string(containsString(CHEF_SPECIAL)))
-		.andExpect(content().string(containsString(LOW_CAL)));
+		.andExpect(status().isOk())
+		.andExpect(model().size(2))
+		.andExpect(model().attribute("menuItems", hasSize(3)))
+		.andExpect(model().attribute("menuItems", hasItems(hasProperty("name", is(STANDARD)),
+															hasProperty("name", is(CHEF_SPECIAL)),
+															hasProperty("name", is(LOW_CAL))) ))
+		.andExpect(model().attributeExists("basket"))
+		.andExpect(forwardedUrl(FORWARDED_URL));
 
 	}
 
