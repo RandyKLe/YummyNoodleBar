@@ -3,7 +3,7 @@ package com.yummynoodlebar.config;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-//import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.*;
 
 import org.junit.Before;
 import org.junit.Test;
