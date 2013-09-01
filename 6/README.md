@@ -1,64 +1,23 @@
- 
-## Step 6: Uploading files
+## Step 8: Securing the Web Application
 
-need a semi plausible reason why we need a file upload ....
+wire up security, as per REST.
 
-### create a test using MockMVC
+that'll do for authentication.
 
-figure out how mockmvc handles multipart.
-http://forum.springsource.org/showthread.php?133813-Writing-an-integration-test-for-file-upload-controller-with-spring-test-mvc
+Now that we can get at authentication
 
-### Update the web config to enable support for servlet 3
+ensure that order creation saves the authentication.name into the order.
 
-update the web config (javax.servlet.MultipartConfigElement)
 
-### Configure the multipart resolver
+### moving onto authorisation..
 
-create a new bean in the web @Configuration
+ensure that previously we have created a method to get hold of an Order. 
 
-void MultipartResolver multipartResolver() {
-  return new StandardServletMultipartResolver();
-}
+annotate the method that gets the order.
 
-<bean id="multipartResolver"
-    class="org.springframework.web.multipart.support.StandardServletMultipartResolver">
-</bean>
+@PreAuthorize("#order.owner == authentication.name")
+public void doSomething(Order order);
 
-### create the html form
---
-<html>
-    <head>
-        <title>Upload a file please</title>
-    </head>
-    <body>
-        <h1>Please upload a file</h1>
-        <form method="post" action="/form" enctype="multipart/form-data">
-            <input type="text" name="name"/>
-            <input type="file" name="file"/>
-            <input type="submit"/>
-        </form>
-    </body>
-</html>
+This method needs to be on some service or other as we can't load the Order directly, as we need to fire events at the core to do the loading.
 
-###create a controller
-
-something like ..
-
-@Controller
-public class FileUploadController {
-
-    @RequestMapping(value = "/form", method = RequestMethod.POST)
-    public String handleFormUpload(@RequestParam("name") String name,
-        @RequestParam("file") MultipartFile file) {
-
-        if (!file.isEmpty()) {
-            byte[] bytes = file.getBytes();
-            // store the bytes somewhere
-           return "redirect:uploadSuccess";
-       } else {
-           return "redirect:uploadFailure";
-       }
-    }
-
-}
-
+need to ensure that the order.owner and authentication.name (what is authentication, could this be principle?) are the same.

@@ -1,23 +1,20 @@
-## Step 8: Securing the Web Application
 
-wire up security, as per REST.
+## Step 8: Updating the Browser from the Server
 
-that'll do for authentication.
+Currently a stretch goal....
 
-Now that we can get at authentication
+to websocket or not ....
 
-ensure that order creation saves the authentication.name into the order.
+long polling is a bit of jquery on the client, a server with a 
+
+DeferredRequest<XX>
+
+some process to release the deferred requests on reciept of an appropriate event
 
 
-### moving onto authorisation..
+OR
 
-ensure that previously we have created a method to get hold of an Order. 
+Websockets
 
-annotate the method that gets the order.
+requires spring 4.
 
-@PreAuthorize("#order.owner == authentication.name")
-public void doSomething(Order order);
-
-This method needs to be on some service or other as we can't load the Order directly, as we need to fire events at the core to do the loading.
-
-need to ensure that the order.owner and authentication.name (what is authentication, could this be principle?) are the same.

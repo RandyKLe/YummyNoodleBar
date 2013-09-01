@@ -129,7 +129,7 @@ Now you can run the following from the command line to execute the new service, 
 $ ./gradlew tomcatRunWar
 ```
 
-Then, if you visit [http://localhost:8080/](http://localhost:8080/), you should get the following plain text response, which is initial menu :
+Then, if you visit [http://localhost:8080/](http://localhost:8080/), you should get the following plain text response, which is the initial menu populated in `PersistenceConfig`:
 
 ```
 Yummy Noodles,Special Yummy Noodles,Low cal Yummy Noodles
@@ -155,6 +155,6 @@ Your full Life Preserver should now look like the following:
 
 ![Life Preserver showing Configuration Domain with Initial Components](../images/life-preserver-rest-domain-and-controllers-and-core-domain-and-config-domain-initial-zoom-out.png)
 
-Your web front end isn't very pretty yet, or even functional, though.  You will add both a pretty face and expand the number of URLs your application responds to, in the next section of this tutorial
+Your web front end isn't very pretty yet, or even functional.  You will add both a pretty face and expand the number of URLs your application responds to, in the next section of this tutorial
 
 [Next.. Creating rich HTML views using JSP and Spring Tags](../4/)
