@@ -139,5 +139,5 @@ See the current state of your application below LP
 
 Your application is a little too open with its information, however.  In the next section, you will learn how to apply security to your application and control who has access to which parts of your website, using Spring Security.
 
-[Next.. Securing the Web Application](6/)
+[Next.. Securing the Web Application](../6/)
 

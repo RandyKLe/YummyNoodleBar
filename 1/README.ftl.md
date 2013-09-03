@@ -82,7 +82,10 @@ For the Yummy Noodle Bar, Users need to :
 The following URLs will give that functionality in a way that the user can easily use and return to :-
 
 <table>
+<thead>
 <tr><th>Action</th><th>URL</th></tr>
+</thead>
+<tbody>
 <tr><td>Show menu list</td><td>GET "/"</td></tr>
 <tr><td>Add a Menu Item to the current basket and redirect to /</td><td>POST "/addToBasket?menuId={menuId}"</td></tr>
 <tr><td>Remove a Menu Item from Basket and redirect to /showBasket</td><td>POST "/removeFromBasket?menuId={menuId}"</td></tr>
@@ -90,6 +93,7 @@ The following URLs will give that functionality in a way that the user can easil
 <tr><td>Form to gather customer information, which posts to /doCheckout</td><td>GET "/checkout"</td></tr>
 <tr><td>Take the current basket and create an order from it, redirect to "/order/{id}"</td><td>POST "/doCheckout"</td></tr>
 <tr><td>View the status of a given order</td><td>GET "/order/{id}"</td></tr>
+</tbody>
 </table>
  
 

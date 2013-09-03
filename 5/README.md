@@ -290,6 +290,8 @@ import com.yummynoodlebar.events.orders.OrderCreatedEvent;
 import com.yummynoodlebar.events.orders.OrderDetails;
 import com.yummynoodlebar.web.domain.Basket;
 import com.yummynoodlebar.web.domain.CustomerInfo;
+import com.yummynoodlebar.web.domain.MenuItem;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -301,6 +303,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -333,11 +336,14 @@ public class CheckoutController {
     
     LOG.debug("No errors, continue with processing for Customer {}:", customer.getName());
     
-    OrderDetails order = Basket.createOrderDetailsFromCustomerInfo(customer);
+    OrderDetails order = basket.createOrderDetailsFromCustomerInfo(customer);
     
     Map<String, Integer> items = new HashMap<String, Integer>();
 
     //TODO ... for (item : basket.getItems())
+    for (MenuItem item : basket.getItems()) {
+		items.put(item.getId(), 1);
+	}
     
 
     order.setOrderItems(items);
@@ -568,5 +574,5 @@ See the current state of your application below LP
 
 Your application is a little too open with its information, however.  In the next section, you will learn how to apply security to your application and control who has access to which parts of your website, using Spring Security.
 
-[Next.. Securing the Web Application](6/)
+[Next.. Securing the Web Application](../6/)
 
