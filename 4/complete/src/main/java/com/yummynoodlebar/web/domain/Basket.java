@@ -1,16 +1,18 @@
 package com.yummynoodlebar.web.domain;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.stereotype.Component;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.context.annotation.Scope;
-import org.springframework.context.annotation.ScopedProxyMode;
-import org.springframework.stereotype.Component;
-
 @Component
+// {!begin scope}
 @Scope(value="session", proxyMode=ScopedProxyMode.TARGET_CLASS)
+// {!end scope}
 public class Basket  {
 
 	private Map<String, MenuItem> items = new HashMap<String, MenuItem>();

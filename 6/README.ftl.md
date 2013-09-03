@@ -11,7 +11,7 @@ Once again, all changes here are constrained to the Configuration domain:
 ![Life Preserver showing Configuration Domain with Initial Components](../images/life-preserver-initial-config-domain-focus.png)
 
 
-## Web security basics
+### Authentication in Web
 
 To limit access to the Yummy Noodle Bar Web font end, you extend the initial web design as follows:
 
@@ -21,21 +21,20 @@ To limit access to the Yummy Noodle Bar Web font end, you extend the initial web
 
 Spring Security helps you perform these steps without you having to change so much as a single controller!
 
-## Add Spring Security to your project
+#### Add Spring Security to your project
 
 First you add Spring Security dependencies to the project, by adding the following entries to your `build.gradle` script:
 
     <@snippet "build.gradle" "repos" "/complete" />
     
-    <@snippet "build.gradle" "security" "/complete" />
+    <@snippet "build.gradle" "deps" "/complete" />
 
 You add the Pivotal milestone repository so that you can use Spring Security 3.2.0.M2. This lets you use some dynamic configuration features of Spring Security, including setting up the web security through JavaConfig.
 
 Now you need to secure your controllers. Until now you've been writing tests first before making any code changes, including configuration. So, instead of immediately adding your security configuration, you'll create a test so that you'll know when your security is being applied correctly.
 
 
-## Test for security
-
+#### Configure Spring Security
 
 You can now add a new concern to your application: security configuration. Create a new Spring configuration in com.yummynoodlebar.config named `SecurityConfig` that contains the following:
 
@@ -43,16 +42,20 @@ You can now add a new concern to your application: security configuration. Creat
 
 This configuration enables security using the `@EnableWebSecurity` annotation, and extends the `WebSecurityConfigurerAdapter` so that you can perform more detailed configuration of the web security you're applying.
 
-The `registerAuthentication` method is overridden from `WebSecurityConfigurerAdapter` in order to configure an in-memory database of users that contains a single user, 'letsnosh', with the USER role. 
+The `registerAuthentication` method is overridden from `WebSecurityConfigurerAdapter` in order to configure an in-memory database of users, their passwords and associated roles.
 
-RESTful services are usually consumed programmatically via clients, such as your test code. It doesn't make much sense to implement a usual challenge+login page system as there is no one to enter the information into the login page if it was actually presented. 
+The `configure`, overridden method from `WebSecurityConfigurerAdapter`, method provides a fine grained fluent API for controlling how the security system will be applied.
 
-Instead here inside the `configure` overridden method from `WebSecurityConfigurerAdapter` you've configured URL level protection using the `http.authorizeUrls()` method. The `http.authorizeUrls()` method protects the /aggregators/** urls, ensuring that only users with the USER role can access them. This means that access to your RESTful URIs must include an HTTP BASIC Authorization Header, and that any request without this header will be responded to with a 403 (Forbidden) HTTP Status Code.
+    <@snippet "src/main/java/com/yummynoodlebar/config/SecurityConfig.java" "configure" "complete" />
+
+Here, you've configured URL level protection using the `http.authorizeUrls()` method. The `http.authorizeUrls()` method protects the /checkout and /order/* urls, ensuring that only users with the USER role can access them.  
+
+This will force users to log in before checking out, and ensure that only logged in users can view orders.  The `formLogin()` method call instructs Spring Security that users will login via an HTML form.  We give no further information on how this will work, and so Spring Security will generate a new HTML form and URL for you available on `/login`.
 
 
-## Configure the Spring Security filter chain
+### Configure the Spring Security filter chain
 
-Spring Security relies on a Servlet filter to apply your security configuration. A filter is used so that security is applied before the Spring MVC Dispatcher Servlet gets involved in processing incoming requests. The Spring Security filter is referred to as the Spring Security filter chain as it actually delegates to a chain of filters internally that each apply one aspect of the security responsibility.
+Spring Security relies on a Servlet filter to apply your security configuration. A filter is used so that security is applied before the Spring MVC Dispatcher Servlet gets involved in processing incoming requests. The Spring Security filter is referred to as the Spring Security filter chain, as it actually delegates to a chain of filters internally that each apply one aspect of the security responsibility.
 
 You now need to configure this filter chain by updating the web application configuration you created earlier. In the previous section, you configured things in the `WebAppInitializer` class.
 
@@ -60,42 +63,38 @@ The first step is to simply add your new `SecurityConfig` JavaConfig class to th
 
     <@snippet "src/main/java/com/yummynoodlebar/config/WebAppInitializer.java" "addToRootContext" "/complete" />
 
-Now you can add the Spring Security Filter:
+Next, Spring Security needs to be inserted into the web context setup.   This could be done in `WebAppInitializer`, however a better option in this case is to add a second web app initializer class specifically for the security setup.
 
-    <@snippet "src/main/java/com/yummynoodlebar/config/WebAppInitializer.java" "configureSpringSecurity" "/complete" />
+    <@snippet path="src/main/java/com/yummynoodlebar/config/SecurityWebAppInitializer.java" prefix="/complete" />
 
-This sets up a Spring `DelegatingFilterProxy` with the `rootContext` and is called from the `onStartup()` method.
+This configures the Spring Security filter chain and manages inserting it into the web context.
 
-    <@snippet "src/main/java/com/yummynoodlebar/config/WebAppInitializer.java" "onStartup" "/complete" />
+It is important the the Spring Security setup is done before the DispatcherServlet configuration in `WebAppInitializer`.  The `@Order` annotation from Spring Core can be used to manage the order of execution.
 
-The name `springSecurityFilterChain` for the filter chain is important as this means that the filter will pass all calls down to a Spring Bean named `springSecurityFilterChain` that it finds in the `rootContext`. You configured this bean using `@Configuration` in the Spring JavaConfig class `SecurityConfig`.
+The full classes now look like
 
+<@snippet path="src/main/java/com/yummynoodlebar/config/SecurityWebAppInitializer.java" prefix="/complete" />
 
+<@snippet path="src/main/java/com/yummynoodlebar/config/WebAppInitializer.java" prefix="/complete" />
 
+### Pulling it together
 
+Run the application.
 
+```
+    ./gradlew tomcatRunWar
+```
 
+When you visit (http://localhost:8080/)[http://localhost:8080] you will be able to see the available menu and add items to your basket, as before.  However now, if you click checkout on the basket screen and visit (http://localhost:8080/checkout)[http://localhost:8080/checkout], you will instead be redirected to a login screen and forced to log in before beign able to proceed.
 
+Enter the user name and password you configured in `SecurityConfig`.  User `letsnosh` and password `noshing`.  You will then be taken to the checkout page, as before.  This time, however, you are logged in.
 
+## Summary
 
-wire up security, as per REST.
+You have secured your application using Spring Security, and Yummy Noodle Bar is getting excited!
 
-that'll do for authentication.
+See the current state of your application below LP
 
-Now that we can get at authentication
+Next, you will use some of the more advanced features of the web to push data from the Server to the browser to create a lower latency, more highly scalable website.
 
-ensure that order creation saves the authentication.name into the order.
-
-
-### moving onto authorisation..
-
-ensure that previously we have created a method to get hold of an Order. 
-
-annotate the method that gets the order.
-
-@PreAuthorize("#order.owner == authentication.name")
-public void doSomething(Order order);
-
-This method needs to be on some service or other as we can't load the Order directly, as we need to fire events at the core to do the loading.
-
-need to ensure that the order.owner and authentication.name (what is authentication, could this be principle?) are the same.
+[Next.. Accepting user submitted data](../7/)

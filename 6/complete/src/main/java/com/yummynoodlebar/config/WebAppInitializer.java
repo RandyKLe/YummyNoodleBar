@@ -11,10 +11,12 @@ import javax.servlet.Filter;
 public class WebAppInitializer extends
 		AbstractAnnotationConfigDispatcherServletInitializer {
 
+  //{!begin addToRootContext}
 	@Override
 	protected Class<?>[] getRootConfigClasses() {
 		return new Class<?>[] { SecurityConfig.class, PersistenceConfig.class, CoreConfig.class };
 	}
+  //{!end addToRootContext}
 
 	@Override
 	protected Class<?>[] getServletConfigClasses() {
@@ -25,7 +27,8 @@ public class WebAppInitializer extends
 	protected String[] getServletMappings() {
 		return new String[] { "/" };
 	}
-	
+
+
 	@Override
 	protected Filter[] getServletFilters() {
 		
@@ -33,5 +36,4 @@ public class WebAppInitializer extends
 		characterEncodingFilter.setEncoding("UTF-8");
 		return new Filter[] { characterEncodingFilter, new SiteMeshFilter()};
 	}
-
 }

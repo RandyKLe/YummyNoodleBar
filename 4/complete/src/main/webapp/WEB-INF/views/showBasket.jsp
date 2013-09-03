@@ -10,8 +10,7 @@
 	<div class="hero-unit">
 		<h3>Basket</h3>
 		<p>
-			<a class="btn btn-primary btn-large"
-				href="<spring:url value="/" htmlEscape="true" />">Continue eating</a>
+			<a class="btn btn-primary btn-large" href="<spring:url value="/" htmlEscape="true" />">Continue eating</a>
 		</p>
 	</div>
 
@@ -39,12 +38,10 @@
 							<td>${basketItem.cost}</td>
 							<td>${basketItem.minutesToPrepare}</td>
 							<td>
-							<c:url var="removeFromBasketUrl" value="removeFromBasket/${basketItem.id}" />
-							<form id="${itemFormId}" action="${removeFromBasketUrl}" method="POST">
+							<form id="${itemFormId}" action="/removeFromBasket" method="POST">
 								<input id="id" name="id" type="hidden" value="${basketItem.id}" />
+								<input type="submit" value="Remove" />
 							</form>
-							<a href="javascript:document.forms['${itemFormId}'].submit();">Remove</a>
-							
 							
 							</td>
 							

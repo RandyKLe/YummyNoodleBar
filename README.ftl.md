@@ -1,6 +1,11 @@
 
 In this tutorial you'll use Spring to create a production strength Web application.
 
+TODO, need a discussion on Spring MVC and the theory of MVC (prob in step 1)
+TODO, need a discussion on the Model portion of MVC (prob in step 2)
+TODO, need a discussion on the Controller portion of MVC (prob in step 2)
+TODO, need a discussion on the View portion of MVC (prob in step 4)
+
 ## Spring and the Web
 
 The web has become a core part of our lives, from shopping to finding the closest ATM. Web applications, server software sending HTML over HTTP, implement the web.

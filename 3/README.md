@@ -8,7 +8,7 @@ At this point you are ready to:
 
 * Configure the core of your application
 * Configure your Web components
-* Initialize your Web font ends web infrastructure
+* Initialize your infrastructure to create a working WAR file.
 * Run your Web application in a web container
 
 To complete these tasks, you'll need a new domain, the Configuration domain.
@@ -435,12 +435,19 @@ dependencies {
 	runtime 'org.slf4j:slf4j-log4j12:1.7.5'
 
 	testCompile 'org.springframework:spring-test:3.2.3.RELEASE'
-	testCompile 'junit:junit:4.+'
+	
+	testCompile 'junit:junit:4.11'
 	testCompile "org.mockito:mockito-all:1.9.5"
-	testCompile "org.hamcrest:hamcrest-core:1.2.1"
-	testCompile "org.hamcrest:hamcrest-library:1.2.1"
+	testCompile "org.hamcrest:hamcrest-library:1.3"
 	
 	provided 'javax.servlet:javax.servlet-api:3.0.1'
+}
+
+test {
+  testLogging {
+    // Show that tests are run in the command-line output
+    events 'started', 'passed'
+  }
 }
 
 task wrapper(type: Wrapper) { gradleVersion = '1.6' }
@@ -461,7 +468,7 @@ Now you can run the following from the command line to execute the new service, 
 $ ./gradlew tomcatRunWar
 ```
 
-Then, if you visit [http://localhost:8080/](http://localhost:8080/), you should get the following plain text response, which is initial menu :
+Then, if you visit [http://localhost:8080/](http://localhost:8080/), you should get the following plain text response, which is the initial menu populated in `PersistenceConfig`:
 
 ```
 Yummy Noodles,Special Yummy Noodles,Low cal Yummy Noodles
@@ -487,6 +494,6 @@ Your full Life Preserver should now look like the following:
 
 ![Life Preserver showing Configuration Domain with Initial Components](../images/life-preserver-rest-domain-and-controllers-and-core-domain-and-config-domain-initial-zoom-out.png)
 
-Your web front end isn't very pretty yet, or even functional, though.  You will add both a pretty face and expand the number of URLs your application responds to, in the next section of this tutorial
+Your web front end isn't very pretty yet, or even functional.  You will add both a pretty face and expand the number of URLs your application responds to, in the next section of this tutorial
 
 [Next.. Creating rich HTML views using JSP and Spring Tags](../4/)

@@ -21,12 +21,14 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import javax.servlet.http.HttpSession;
-
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+/*
+  TODOCUMENT
+  This is an example of a 'subcutaneous' test (uncle bob).
+  Boots up the entire application, minus the http interface itself and executes tests against it.
+ */
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration(classes = {
@@ -34,6 +36,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
     PersistenceConfig.class, WebConfig.class})
 public class SecureCheckoutIntegrationTest {
 
+  //TODOCUMENT. this is how we get hold of the spring security delegate.
+  //The delegate exists in the spring app context, we auto inject it from the SecurityConfig, and then pass it into the
+  //MockMVC environment below to participate in the tests.
   @Autowired
   private FilterChainProxy springSecurityFilterChain;
 

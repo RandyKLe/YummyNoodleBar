@@ -9,6 +9,7 @@ import com.yummynoodlebar.web.domain.CustomerInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -39,6 +40,7 @@ public class CheckoutController {
     return "/checkout";
   }
 
+  @PreAuthorize("hasRole('ROLE_ADMINWIBBLE')")
   @RequestMapping(method = RequestMethod.POST)
   public String doCheckout(@Valid @ModelAttribute("customerInfo") CustomerInfo customer, BindingResult result,
                            RedirectAttributes redirectAttrs) {

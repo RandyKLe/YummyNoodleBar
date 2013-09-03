@@ -84,8 +84,8 @@ The following URLs will give that functionality in a way that the user can easil
 <table>
 <tr><th>Action</th><th>URL</th></tr>
 <tr><td>Show menu list</td><td>GET "/"</td></tr>
-<tr><td>Add a Menu Item to the current basket and redirect to /</td><td>POST "/addToBasket/{menuId}"</td></tr>
-<tr><td>Remove a Menu Item from Basket and redirect to /showBasket</td><td>POST "/removeFromBasket/{menuId}"</td></tr>
+<tr><td>Add a Menu Item to the current basket and redirect to /</td><td>POST "/addToBasket?menuId={menuId}"</td></tr>
+<tr><td>Remove a Menu Item from Basket and redirect to /showBasket</td><td>POST "/removeFromBasket?menuId={menuId}"</td></tr>
 <tr><td>Show current Basket</td><td>GET "/showBasket"</td></tr>
 <tr><td>Form to gather customer information, which posts to /doCheckout</td><td>GET "/checkout"</td></tr>
 <tr><td>Take the current basket and create an order from it, redirect to "/order/{id}"</td><td>POST "/doCheckout"</td></tr>
@@ -109,12 +109,10 @@ An Order with an Order ID of 37 would have the following specific URI:
     http://www.yummynoodlebar.com/order/37
 
 
-
-
 ## Summary
 
 Congratulations!  You've determined the URLs and links between them that you are going to show to your users and captured those components in the following Life Preserver :
 
-TODO, enter the Web initial web domain.
+TODO, show the Web initial web domain as a LF.
 
 [Next… Implementing URLs and returning data](../2/)

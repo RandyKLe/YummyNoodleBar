@@ -8,7 +8,7 @@ At this point you are ready to:
 
 * Configure the core of your application
 * Configure your Web components
-* Initialize your Web font ends web infrastructure
+* Initialize your infrastructure to create a working WAR file.
 * Run your Web application in a web container
 
 To complete these tasks, you'll need a new domain, the Configuration domain.
