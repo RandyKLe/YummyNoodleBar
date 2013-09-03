@@ -196,24 +196,24 @@ public class WebAppInitializer extends
 }
 ```
 
+### Pulling it together
 
+Run the application.
 
+```
+    ./gradlew tomcatRunWar
+```
 
+When you visit (http://localhost:8080/)[http://localhost:8080] you will be able to see the available menu and add items to your basket, as before.  However now, if you click checkout on the basket screen and visit (http://localhost:8080/checkout)[http://localhost:8080/checkout], you will instead be redirected to a login screen and forced to log in before beign able to proceed.
 
-Now that we can get at authentication
+Enter the user name and password you configured in `SecurityConfig`.  User `letsnosh` and password `noshing`.  You will then be taken to the checkout page, as before.  This time, however, you are logged in.
 
-ensure that order creation saves the authentication.name into the order.
+## Summary
 
+You have secured your application using Spring Security, and Yummy Noodle Bar is getting excited!
 
-### moving onto authorisation..
+See the current state of your application below LP
 
-ensure that previously we have created a method to get hold of an Order. 
+Next, you will use some of the more advanced features of the web to push data from the Server to the browser to create a lower latency, more highly scalable website.
 
-annotate the method that gets the order.
-
-@PreAuthorize("#order.owner == authentication.name")
-public void doSomething(Order order);
-
-This method needs to be on some service or other as we can't load the Order directly, as we need to fire events at the core to do the loading.
-
-need to ensure that the order.owner and authentication.name (what is authentication, could this be principle?) are the same.
+[Next.. Accepting user submitted data](../7/)

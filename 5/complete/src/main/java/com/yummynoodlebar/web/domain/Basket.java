@@ -1,13 +1,17 @@
 package com.yummynoodlebar.web.domain;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
+
+import com.yummynoodlebar.events.orders.OrderDetails;
 
 @Component
 @Scope(value="session", proxyMode=ScopedProxyMode.TARGET_CLASS)
@@ -56,5 +60,12 @@ public class Basket  {
 	
 	public int getSize() {
 		return items.size();
+	}
+	
+	public static OrderDetails createOrderDetailsFromCustomerInfo(CustomerInfo info) {
+	    OrderDetails order = new OrderDetails();
+	    BeanUtils.copyProperties(info, order);
+	    order.setDateTimeOfSubmission(new Date());
+		return order;
 	}
 }

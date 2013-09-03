@@ -9,6 +9,9 @@
 <body>
 	<div class="hero-unit">
 		<h3>Where do we deliver your Order?</h3>
+		<p>
+			<a class="btn btn-primary btn-large" href="<spring:url value="/showBasket" htmlEscape="true" />">Back to basket</a>
+		</p>
 
 	</div>
 
@@ -41,7 +44,7 @@
                     </tr>
                     <tr>
                         <td colspan="3">
-                            <input type="submit" value="Save Changes" />
+                            <input type="submit" value="Place order" />
                         </td>
                     </tr>
                 </table>

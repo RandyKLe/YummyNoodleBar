@@ -458,7 +458,7 @@ public class BasketCommandIntegrationTest {
 	
 	
 	@Test
-	public void addToBasketRedirects() throws Exception {
+	public void thatAddToBasketRedirects() throws Exception {
 		mockMvc.perform(post("/addToBasket"))
 		.andDo(print())
 		.andExpect(status().isMovedTemporarily())
@@ -467,7 +467,7 @@ public class BasketCommandIntegrationTest {
 	}
 	
 	@Test
-	public void addToBasketCollaborates() throws Exception {
+	public void thatAddToBasketCollaborates() throws Exception {
 				
 		mockMvc.perform(post("/addToBasket"))
 		.andDo(print());
@@ -476,7 +476,7 @@ public class BasketCommandIntegrationTest {
 	}
 	
 	@Test
-	public void removeFromBasketRedirects() throws Exception {
+	public void thatRemoveFromBasketRedirects() throws Exception {
 		mockMvc.perform(post("/removeFromBasket"))
 		.andDo(print())
 		.andExpect(status().isMovedTemporarily())
@@ -484,7 +484,7 @@ public class BasketCommandIntegrationTest {
 		.andExpect(redirectedUrl(REMOVE_REDIRECTED_URL));
 	}
 	@Test
-	public void removeFromBasketCollaborates() throws Exception {
+	public void thatRemoveFromBasketCollaborates() throws Exception {
 				
 		mockMvc.perform(post("/removeFromBasket/").param("id", MENU_ID))
 		.andDo(print());

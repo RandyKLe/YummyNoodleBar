@@ -14,8 +14,12 @@
 
 	<div class="row-fluid">
 		<div class="span8">
-            Your order has been received, and your order number is ${orderStatus.orderId}<br/>
-            The estimate for cooking is 20 minutes. ${orderStatus.status}
+			<p class="text-info">${orderStatus.name} thanks for your order</p>
+			<p class="text-info">Your order number is ${orderStatus.orderId}</p>
+           	<p class="text-info">The estimate for cooking is 20 minutes</p>
+           	
+           	<p class="text-success">The status is currently ${orderStatus.status}</p>
+           	
             <div>
                 Refresh this page to see updates to the status
             </div>

@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -47,14 +46,15 @@ public class CheckoutController {
       //show the checkout form again
       return "/checkout";
     }
-
-    OrderDetails order = new OrderDetails();
-    order.setDateTimeOfSubmission(new Date());
-
+    
+    LOG.debug("No errors, continue with processing for Customer {}:", customer.getName());
+    
+    OrderDetails order = Basket.createOrderDetailsFromCustomerInfo(customer);
+    
     Map<String, Integer> items = new HashMap<String, Integer>();
 
     //TODO ... for (item : basket.getItems())
-    //TODO, update with customer information.
+    
 
     order.setOrderItems(items);
 
@@ -69,10 +69,12 @@ public class CheckoutController {
     return "redirect:/order/" + key.toString();
   }
 
+  //{!begin customerInfo}
   @ModelAttribute("customerInfo")
   private CustomerInfo getCustomerInfo() {
     return new CustomerInfo();
   }
+  //{!end customerInfo}
 
   @ModelAttribute("basket")
   private Basket getBasket() {

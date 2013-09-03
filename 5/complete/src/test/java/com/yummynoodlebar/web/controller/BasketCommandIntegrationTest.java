@@ -1,6 +1,7 @@
 package com.yummynoodlebar.web.controller;
 
-import static org.mockito.Matchers.any;
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -12,6 +13,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standal
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
+import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.test.web.servlet.MockMvc;
@@ -22,6 +24,7 @@ import com.yummynoodlebar.web.domain.MenuItem;
 
 public class BasketCommandIntegrationTest {
 		
+	private static final String MENU_NAME = "Yummy Noodles";
 	private static final String MENU_ID = "LOOK_FOR_ME_IN_THE_LOG";
 	private static final String ADD_REDIRECTED_URL = "/";
 	private static final String ADD_VIEW = "redirect:/";
@@ -54,8 +57,8 @@ public class BasketCommandIntegrationTest {
 	
 	
 	@Test
-	public void addToBasketRedirects() throws Exception {
-		mockMvc.perform(post("/addToBasket/{id}", "YM1"))
+	public void thatAddToBasketRedirects() throws Exception {
+		mockMvc.perform(post("/addToBasket"))
 		.andDo(print())
 		.andExpect(status().isMovedTemporarily())
 		.andExpect(view().name(ADD_VIEW))
@@ -63,26 +66,34 @@ public class BasketCommandIntegrationTest {
 	}
 	
 	@Test
-	public void addToBasketCollaborates() throws Exception {
+	public void thatAddToBasketCollaborates() throws Exception {
 				
-		mockMvc.perform(post("/addToBasket/{id}", "YM1"))
-		.andDo(print());
-		
-		verify(basket).add(any(MenuItem.class));
+		mockMvc.perform(
+				post("/addToBasket").param("id", MENU_ID)
+									.param("name", MENU_NAME))
+				.andDo(print());
+//@formatter:off		
+		verify(basket).add(Matchers.<MenuItem>argThat(
+		        allOf(
+		                org.hamcrest.Matchers.<MenuItem>hasProperty("id", equalTo(MENU_ID)),
+		                org.hamcrest.Matchers.<MenuItem>hasProperty("name", equalTo(MENU_NAME)))
+		                
+		            ));
+//@formatter:on
 	}
 	
 	@Test
-	public void removeFromBasketRedirects() throws Exception {
-		mockMvc.perform(post("/removeFromBasket/{id}", "YM1"))
+	public void thatRemoveFromBasketRedirects() throws Exception {
+		mockMvc.perform(post("/removeFromBasket"))
 		.andDo(print())
 		.andExpect(status().isMovedTemporarily())
 		.andExpect(view().name(REMOVE_VIEW))
 		.andExpect(redirectedUrl(REMOVE_REDIRECTED_URL));
 	}
 	@Test
-	public void removeFromBasketCollaborates() throws Exception {
+	public void thatRemoveFromBasketCollaborates() throws Exception {
 				
-		mockMvc.perform(post("/removeFromBasket/{id}", "YM1").param("id", MENU_ID))
+		mockMvc.perform(post("/removeFromBasket").param("id", MENU_ID))
 		.andDo(print());
 		
 		verify(basket).delete(MENU_ID);
