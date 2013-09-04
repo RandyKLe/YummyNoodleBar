@@ -22,7 +22,7 @@ public class OrderStatusMemoryRepository implements OrderStatusRepository {
   @Override
   public OrderStatus findLatestById(UUID key) {
     for(OrderStatus item: orderStatuses.values()) {
-      if (item.getId().equals(key)) {
+      if (item.getOrderId().equals(key)) {
         return item;
       }
     }

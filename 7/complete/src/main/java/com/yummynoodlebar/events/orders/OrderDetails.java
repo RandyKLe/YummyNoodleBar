@@ -10,6 +10,13 @@ public class OrderDetails {
   private UUID key;
   private Date dateTimeOfSubmission;
   private Map<String, Integer> orderItems;
+  
+  private String name;
+  private String address1;
+  private String postcode;
+  
+  private String userName;
+  
 
   public OrderDetails() {
     key = null;
@@ -46,4 +53,36 @@ public class OrderDetails {
   public void setKey(UUID key) {
     this.key = key;
   }
+
+public String getName() {
+	return name;
+}
+
+public void setName(String name) {
+	this.name = name;
+}
+
+public String getAddress1() {
+	return address1;
+}
+
+public void setAddress1(String address1) {
+	this.address1 = address1;
+}
+
+public String getPostcode() {
+	return postcode;
+}
+
+public void setPostcode(String postcode) {
+	this.postcode = postcode;
+}
+
+public String getUserName() {
+	return userName;
+}
+
+public void setUserName(String userName) {
+	this.userName = userName;
+}
 }

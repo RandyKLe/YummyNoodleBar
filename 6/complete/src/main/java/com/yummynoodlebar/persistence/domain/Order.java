@@ -1,6 +1,7 @@
 package com.yummynoodlebar.persistence.domain;
 
 import com.yummynoodlebar.events.orders.OrderDetails;
+
 import org.springframework.beans.BeanUtils;
 
 import java.util.*;
@@ -13,6 +14,10 @@ public class Order {
 
   private OrderStatus status;
   private List<OrderStatus> statusHistory;
+  
+  private String name;
+  private String address1;
+  private String postcode;
 
   public Order(final Date dateTimeOfSubmission) {
     this.key = UUID.randomUUID();
@@ -64,4 +69,40 @@ public class Order {
 
     return order;
   }
+
+public List<OrderStatus> getStatusHistory() {
+	return statusHistory;
+}
+
+public void setStatusHistory(List<OrderStatus> statusHistory) {
+	this.statusHistory = statusHistory;
+}
+
+public String getName() {
+	return name;
+}
+
+public void setName(String name) {
+	this.name = name;
+}
+
+public String getAddress1() {
+	return address1;
+}
+
+public void setAddress1(String address1) {
+	this.address1 = address1;
+}
+
+public String getPostcode() {
+	return postcode;
+}
+
+public void setPostcode(String postcode) {
+	this.postcode = postcode;
+}
+
+public void setStatus(OrderStatus status) {
+	this.status = status;
+}
 }

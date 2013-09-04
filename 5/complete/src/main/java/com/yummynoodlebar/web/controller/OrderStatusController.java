@@ -30,8 +30,7 @@ public class OrderStatusController {
 
 	@RequestMapping(method = RequestMethod.GET)
 	public String orderStatus(@ModelAttribute("orderStatus") OrderStatus orderStatus) {
-		LOG.debug("Get order status for order id {} customer {}",
-		orderStatus.getOrderId(), orderStatus.getName());
+		LOG.debug("Get order status for order id {} customer {}", orderStatus.getOrderId(), orderStatus.getName());
 		return "/order";
 	}
 

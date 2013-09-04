@@ -1,18 +1,13 @@
 
-In this tutorial you'll use Spring to create a production strength Web application.
-
-TODO, need a discussion on Spring MVC and the theory of MVC (prob in step 1)
-TODO, need a discussion on the Model portion of MVC (prob in step 2)
-TODO, need a discussion on the Controller portion of MVC (prob in step 2)
-TODO, need a discussion on the View portion of MVC (prob in step 4)
+In this tutorial you'll learn to use Spring to create production strength Web applications.
 
 ## Spring and the Web
 
 The web has become a core part of our lives, from shopping to finding the closest ATM. Web applications, server software sending HTML over HTTP, implement the web.
 
-Spring helps you build web applications that scale from a small internal applications to millions
+Spring helps you build web applications that scale from a small internal applications to those serving millions of users and thousands of concurrent requests.
 
-Whether you are beginning the construction of a web application using Spring, or ar just curious on what a Spring backed web application looks like, you've come to the right place.
+Whether you are beginning the construction of a web application using Spring, or are just curious on what a Spring backed web application looks like, you've come to the right place.
 
 ## What you'll build
 
@@ -25,7 +20,7 @@ You will extend Yummy Noodle Bar's existing application by adding an web compone
 ## What you'll need
 
 * About an hour.
-* A copy of the code (TODO - downloadable as Zip and/or git clone).
+* A copy of the code (available either by [git][u-git] or a [downloadable zip file](https://github.com/spring-guides/tut-web/archive/master.zip)).
 * An IDE of your choice; Spring recommends [Spring Tool Suite](http://www.springsource.org/sts), which is a [free download](http://www.springsource.org/sts).
 
 ### Downloading and running the code

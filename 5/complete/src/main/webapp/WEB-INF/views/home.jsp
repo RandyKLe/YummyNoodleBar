@@ -52,7 +52,7 @@
 							<td>${item.minutesToPrepare}</td>
 							<td>
 							
-							<form id="${itemFormId}" action="/addToBasket" method="POST">
+							<form id="${itemFormId}" action="<spring:url value="/addToBasket" htmlEscape="true" />" method="POST">
 								<input id="id" name="id" type="hidden" value="${item.id}" />
 								<input id="name" name="name" type="hidden" value="${item.name}" />
 								<input id="cost" name="cost" type="hidden" value="${item.cost}" />

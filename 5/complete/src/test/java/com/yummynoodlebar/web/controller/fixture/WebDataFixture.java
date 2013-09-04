@@ -40,6 +40,10 @@ public class WebDataFixture {
 	
 }
   
+  public static OrderDetails standardOrderDetails () {
+	  return standardOrderDetails(UUID.randomUUID());
+}
+  
   public static OrderDetails standardOrderDetails (UUID id) {
 	  OrderDetails orderDetails = new OrderDetails(id);
 	  orderDetails.setName(CUSTOMER_NAME);

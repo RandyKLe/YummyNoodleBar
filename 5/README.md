@@ -44,9 +44,29 @@ Add this test into your project.
 ```java
 package com.yummynoodlebar.web.controller;
 
-import com.yummynoodlebar.core.services.OrderService;
-import com.yummynoodlebar.events.orders.CreateOrderEvent;
-import com.yummynoodlebar.web.domain.Basket;
+import static com.yummynoodlebar.web.controller.fixture.WebDataFixture.newOrder;
+import static com.yummynoodlebar.web.controller.fixture.WebDataFixture.standardWebMenuItem;
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.empty;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasProperty;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
+
+import java.util.UUID;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -56,17 +76,9 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
-import java.util.UUID;
-
-import static com.yummynoodlebar.web.controller.fixture.WebDataFixture.newOrder;
-import static org.hamcrest.Matchers.*;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
+import com.yummynoodlebar.core.services.OrderService;
+import com.yummynoodlebar.events.orders.CreateOrderEvent;
+import com.yummynoodlebar.web.domain.Basket;
 
 public class CheckoutIntegrationTest {
 
@@ -86,13 +98,14 @@ public class CheckoutIntegrationTest {
 	@Mock
 	OrderService orderService;
 
-	@Mock
-	Basket basket;
-
 	@Before
 	public void setup() {
+		
+		
 		MockitoAnnotations.initMocks(this);
-
+		
+		controller.setBasket(new Basket());
+		
 		mockMvc = standaloneSetup(controller).setViewResolvers(viewResolver())
 				.build();
 	}
@@ -120,8 +133,7 @@ public class CheckoutIntegrationTest {
 	public void thatRedirectsToOrderOnSuccess() throws Exception {
 		UUID id = UUID.randomUUID();
 
-		when(orderService.createOrder(any(CreateOrderEvent.class))).thenReturn(
-				newOrder(id));
+		when(orderService.createOrder(any(CreateOrderEvent.class))).thenReturn(newOrder(id));
 
 		mockMvc.perform(
 				post("/checkout").param("name", CUSTOMER_NAME)
@@ -129,35 +141,50 @@ public class CheckoutIntegrationTest {
 								 .param("postcode", POST_CODE))
 						         .andExpect(status().isMovedTemporarily())
 						         .andExpect(redirectedUrl("/order/" + id.toString()));
-
-		verify(orderService).createOrder(any(CreateOrderEvent.class));
 	}
 
 	@Test
 	public void thatSendsCorrectOrderEventOnSuccess() throws Exception {
 		UUID id = UUID.randomUUID();
 
-		when(orderService.createOrder(any(CreateOrderEvent.class))).thenReturn(
-				newOrder(id));
+		when(orderService.createOrder(any(CreateOrderEvent.class))).thenReturn(newOrder(id));
+		
+		mockMvc.perform(post("/checkout")
+				.param("name", CUSTOMER_NAME)
+				.param("address1", ADDRESS1)
+				.param("postcode", POST_CODE))
+				.andDo(print());
 
-		mockMvc.perform(post("/checkout").param("name", CUSTOMER_NAME)
-				.param("address1", ADDRESS1).param("postcode", POST_CODE));
+		//@formatter:off
+	    verify(orderService).createOrder(Matchers.<CreateOrderEvent>argThat(
+	        allOf(
+	            org.hamcrest.Matchers.<CreateOrderEvent>hasProperty("details",
+	        											hasProperty("dateTimeOfSubmission", notNullValue())),
 
-//@formatter:off
-    verify(orderService).createOrder(Matchers.<CreateOrderEvent>argThat(
-        allOf(
-            org.hamcrest.Matchers.<CreateOrderEvent>hasProperty("details",
-        											hasProperty("dateTimeOfSubmission", notNullValue())),
+	            org.hamcrest.Matchers.<CreateOrderEvent>hasProperty("details",
+	            										hasProperty("name", equalTo(CUSTOMER_NAME))),
 
-            org.hamcrest.Matchers.<CreateOrderEvent>hasProperty("details",
-            										hasProperty("name", equalTo(CUSTOMER_NAME))),
+	            org.hamcrest.Matchers.<CreateOrderEvent>hasProperty("details",
+	            										hasProperty("address1", equalTo(ADDRESS1))),
+	            org.hamcrest.Matchers.<CreateOrderEvent>hasProperty("details",
+	            										hasProperty("postcode", equalTo(POST_CODE)))
+	        )));
+	//@formatter:on
+	}
+	
+	@Test
+	public void thatBasketIsEmptyOnSuccess() throws Exception {
+		UUID id = UUID.randomUUID();
 
-            org.hamcrest.Matchers.<CreateOrderEvent>hasProperty("details",
-            										hasProperty("address1", equalTo(ADDRESS1))),
-            org.hamcrest.Matchers.<CreateOrderEvent>hasProperty("details",
-            										hasProperty("postcode", equalTo(POST_CODE)))
-        )));
-//@formatter:on    
+		when(orderService.createOrder(any(CreateOrderEvent.class))).thenReturn(newOrder(id));
+
+		controller.getBasket().add(standardWebMenuItem());
+		
+		mockMvc.perform(
+				post("/checkout").param("name", CUSTOMER_NAME)
+								 .param("address1", ADDRESS1)
+								 .param("postcode", POST_CODE));
+		assertThat(controller.getBasket().getItems(), is(empty()));
 	}
 
 	@Test
@@ -179,8 +206,12 @@ TODO Describe setup of a test with a view resolver.
 ```java
 	@Before
 	public void setup() {
+		
+		
 		MockitoAnnotations.initMocks(this);
-
+		
+		controller.setBasket(new Basket());
+		
 		mockMvc = standaloneSetup(controller).setViewResolvers(viewResolver())
 				.build();
 	}
@@ -290,8 +321,6 @@ import com.yummynoodlebar.events.orders.OrderCreatedEvent;
 import com.yummynoodlebar.events.orders.OrderDetails;
 import com.yummynoodlebar.web.domain.Basket;
 import com.yummynoodlebar.web.domain.CustomerInfo;
-import com.yummynoodlebar.web.domain.MenuItem;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -303,71 +332,67 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
-
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
 @Controller
 @RequestMapping("/checkout")
 public class CheckoutController {
 
-  private static final Logger LOG = LoggerFactory.getLogger(BasketCommandController.class);
+	private static final Logger LOG = LoggerFactory
+			.getLogger(BasketCommandController.class);
 
-  @Autowired
-  private Basket basket;
+	@Autowired
+	private Basket basket;
 
-  @Autowired
-  private OrderService orderService;
+	@Autowired
+	private OrderService orderService;
 
-  @RequestMapping(method= RequestMethod.GET)
-  public String checkout() {
-    return "/checkout";
-  }
-
-  @RequestMapping(method = RequestMethod.POST)
-  public String doCheckout(@Valid @ModelAttribute("customerInfo") CustomerInfo customer, BindingResult result,
-                           RedirectAttributes redirectAttrs) {
-    if (result.hasErrors()) {
-      //errors in the form
-      //show the checkout form again
-      return "/checkout";
-    }
-    
-    LOG.debug("No errors, continue with processing for Customer {}:", customer.getName());
-    
-    OrderDetails order = basket.createOrderDetailsFromCustomerInfo(customer);
-    
-    Map<String, Integer> items = new HashMap<String, Integer>();
-
-    //TODO ... for (item : basket.getItems())
-    for (MenuItem item : basket.getItems()) {
-		items.put(item.getId(), 1);
+	@RequestMapping(method = RequestMethod.GET)
+	public String checkout() {
+		return "/checkout";
 	}
-    
 
-    order.setOrderItems(items);
+	@RequestMapping(method = RequestMethod.POST)
+	public String doCheckout(@Valid @ModelAttribute("customerInfo") CustomerInfo customer, BindingResult result, RedirectAttributes redirectAttrs) {
+		if (result.hasErrors()) {
+			// errors in the form
+			// show the checkout form again
+			return "/checkout";
+		}
 
-    OrderCreatedEvent event = orderService.createOrder(new CreateOrderEvent(order));
+		LOG.debug("No errors, continue with processing for Customer {}:",
+				customer.getName());
 
-    UUID key = event.getNewOrderKey();
+		OrderDetails order = basket
+				.createOrderDetailsWithCustomerInfo(customer);
 
-    redirectAttrs.addFlashAttribute("message", "Your order has been accepted!");
+		OrderCreatedEvent event = orderService
+				.createOrder(new CreateOrderEvent(order));
 
-    //TODO, clear basket.. how?
+		UUID key = event.getNewOrderKey();
 
-    return "redirect:/order/" + key.toString();
-  }
+		redirectAttrs.addFlashAttribute("message",
+				"Your order has been accepted!");
 
-  @ModelAttribute("customerInfo")
-  private CustomerInfo getCustomerInfo() {
-    return new CustomerInfo();
-  }
+		basket.clear();
+		LOG.debug("Basket now has {} items", basket.getSize());
 
-  @ModelAttribute("basket")
-  private Basket getBasket() {
-    return basket;
-  }
+		return "redirect:/order/" + key.toString();
+	}
+
+	@ModelAttribute("customerInfo")
+	private CustomerInfo getCustomerInfo() {
+		return new CustomerInfo();
+	}
+
+	@ModelAttribute("basket")
+	public Basket getBasket() {
+		return basket;
+	}
+
+	public void setBasket(Basket basket) {
+		this.basket = basket;
+	}
 }
 ```
 
@@ -381,10 +406,10 @@ You will notice the `@ModelAttribute` annotation on the `customerInfo` parameter
 
 `src/main/java/com/yummynoodlebar/web/controller/CheckoutController.java`
 ```java
-  @ModelAttribute("customerInfo")
-  private CustomerInfo getCustomerInfo() {
-    return new CustomerInfo();
-  }
+	@ModelAttribute("customerInfo")
+	private CustomerInfo getCustomerInfo() {
+		return new CustomerInfo();
+	}
 ```
 
 Together, these declare the CustomerInfo class to be a Command Object. When the page is rendered for the first time on a `GET /checkout`, the method `getCustomerInfo` is called to generate the 'customerInfo' property in the model.  You could pre-populate this is you wanted to in the `getCustomerInfo` method.   This property is then available in the model for the View to use during rendering, which you will see in the next section.
@@ -542,8 +567,7 @@ public class OrderStatusController {
 
 	@RequestMapping(method = RequestMethod.GET)
 	public String orderStatus(@ModelAttribute("orderStatus") OrderStatus orderStatus) {
-		LOG.debug("Get order status for order id {} customer {}",
-		orderStatus.getOrderId(), orderStatus.getName());
+		LOG.debug("Get order status for order id {} customer {}", orderStatus.getOrderId(), orderStatus.getName());
 		return "/order";
 	}
 

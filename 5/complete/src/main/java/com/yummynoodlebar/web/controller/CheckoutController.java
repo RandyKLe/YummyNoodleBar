@@ -17,67 +17,68 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
 @Controller
 @RequestMapping("/checkout")
 public class CheckoutController {
 
-  private static final Logger LOG = LoggerFactory.getLogger(BasketCommandController.class);
+	private static final Logger LOG = LoggerFactory
+			.getLogger(BasketCommandController.class);
 
-  @Autowired
-  private Basket basket;
+	@Autowired
+	private Basket basket;
 
-  @Autowired
-  private OrderService orderService;
+	@Autowired
+	private OrderService orderService;
 
-  @RequestMapping(method= RequestMethod.GET)
-  public String checkout() {
-    return "/checkout";
-  }
+	@RequestMapping(method = RequestMethod.GET)
+	public String checkout() {
+		return "/checkout";
+	}
 
-  @RequestMapping(method = RequestMethod.POST)
-  public String doCheckout(@Valid @ModelAttribute("customerInfo") CustomerInfo customer, BindingResult result,
-                           RedirectAttributes redirectAttrs) {
-    if (result.hasErrors()) {
-      //errors in the form
-      //show the checkout form again
-      return "/checkout";
-    }
-    
-    LOG.debug("No errors, continue with processing for Customer {}:", customer.getName());
-    
-    OrderDetails order = Basket.createOrderDetailsFromCustomerInfo(customer);
-    
-    Map<String, Integer> items = new HashMap<String, Integer>();
+	@RequestMapping(method = RequestMethod.POST)
+	public String doCheckout(@Valid @ModelAttribute("customerInfo") CustomerInfo customer, BindingResult result, RedirectAttributes redirectAttrs) {
+		if (result.hasErrors()) {
+			// errors in the form
+			// show the checkout form again
+			return "/checkout";
+		}
 
-    //TODO ... for (item : basket.getItems())
-    
+		LOG.debug("No errors, continue with processing for Customer {}:",
+				customer.getName());
 
-    order.setOrderItems(items);
+		OrderDetails order = basket
+				.createOrderDetailsWithCustomerInfo(customer);
 
-    OrderCreatedEvent event = orderService.createOrder(new CreateOrderEvent(order));
+		OrderCreatedEvent event = orderService
+				.createOrder(new CreateOrderEvent(order));
 
-    UUID key = event.getNewOrderKey();
+		UUID key = event.getNewOrderKey();
 
-    redirectAttrs.addFlashAttribute("message", "Your order has been accepted!");
+		redirectAttrs.addFlashAttribute("message",
+				"Your order has been accepted!");
 
-    //TODO, clear basket.. how?
+		basket.clear();
+		LOG.debug("Basket now has {} items", basket.getSize());
 
-    return "redirect:/order/" + key.toString();
-  }
+		return "redirect:/order/" + key.toString();
+	}
 
-  //{!begin customerInfo}
-  @ModelAttribute("customerInfo")
-  private CustomerInfo getCustomerInfo() {
-    return new CustomerInfo();
-  }
-  //{!end customerInfo}
+	// {!begin customerInfo}
+	@ModelAttribute("customerInfo")
+	private CustomerInfo getCustomerInfo() {
+		return new CustomerInfo();
+	}
 
-  @ModelAttribute("basket")
-  private Basket getBasket() {
-    return basket;
-  }
+	// {!end customerInfo}
+
+	@ModelAttribute("basket")
+	public Basket getBasket() {
+		return basket;
+	}
+
+	public void setBasket(Basket basket) {
+		this.basket = basket;
+	}
 }
