@@ -37,9 +37,9 @@ You should write as many tests as is practical at the lower levels of the pyrami
 
 ### Testing with Spring MockMvc
 
-Spring provides comprehensive support for writing tests at all levels of the pyramid. 
+Spring provides comprehensive support for writing tests at all levels of the pyramid.
 
-You need to write a Spring MVC controller, which will contain a significant number of annotations to define its behaviour.  That behaviour needs to be tested so you can be sure that it works along with the raw Java implementation of the controller.  
+You need to write a Spring MVC controller, which will contain a significant number of annotations to define its behaviour.  That behaviour needs to be tested so you can be sure that it works along with the raw Java implementation of the controller.
 
 Spring provides MockMVC as the solution to this testing, and allows you to write what Martin Fowler calls a [Subcutaneous Test]( http://martinfowler.com/bliki/SubcutaneousTest.html), driving the controller in the same way that a full web container would.
 
@@ -50,7 +50,7 @@ The first URL you will implement is "/".  This is the root of the Yummy Noodle b
 The first thing to do, is make the site url available.
 
 First step, you need to create a new, empty class `com.yummynoodlebar.web.controller.SiteController`
-This is where you will implement the controller.  
+This is where you will implement the controller.
 
 Before you can implement that controller though, create a new test `com.yummynoodlebar.web.controller.SiteIntegrationTest`
 
@@ -76,27 +76,27 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
 
 public class SiteIntegrationTest {
-	
+
 	private static final String RESPONSE_BODY = "Yummy Noodles,Special Yummy Noodles,Low cal Yummy Noodles";
 
 	MockMvc mockMvc;
-	
+
 	@InjectMocks
 	SiteController controller;
-	
+
 	@Mock
 	MenuService menuService;
-	
+
 	@Before
 	public void setup() {
 		MockitoAnnotations.initMocks(this);
-		
+
 		mockMvc = standaloneSetup(controller).build();
-		
+
 		when(menuService.requestAllMenuItems(any(RequestAllMenuItemsEvent.class))).thenReturn(WebDataFixture.allMenuItems());
 
 	}
-	
+
 	@Test
 	public void thatTextReturned() throws Exception {
 		mockMvc.perform(get("/"))
@@ -109,7 +109,7 @@ public class SiteIntegrationTest {
 ```
 
 
-Run the test with 
+Run the test with
 
 ```sh
 $ ./gradlew -Dtest.single=SiteIntegrationTest test
@@ -141,7 +141,7 @@ The controller class you created has no implementation or configuration yet, as 
 
 ## Create a controller and mapping
 
-You are building an interactive, HTML website for a user to use, however the first thing you need to do is get a basic controller returning some text to the user.  
+You are building an interactive, HTML website for a user to use, however the first thing you need to do is get a basic controller returning some text to the user.
 
 As we have described in the test above, you will build a controller that will query for menu items.  For now, the test expects the menu items to be populated into a plain text file, comma delimited.
 
@@ -167,17 +167,17 @@ import com.yummynoodlebar.events.menu.RequestAllMenuItemsEvent;
 public class SiteController {
 
 	private static final Logger LOG = LoggerFactory.getLogger(SiteController.class);
-	
+
 	@Autowired
 	private MenuService menuService;
-		
+
 	@RequestMapping(method = RequestMethod.GET)
 	@ResponseBody
 	public String getCurrentMenu() {
 		LOG.debug("Yummy Menu directly to ResponseBody");
 		return prettyPrint(menuService.requestAllMenuItems(new RequestAllMenuItemsEvent()));
 	}
-	
+
 	private String prettyPrint(AllMenuItemsEvent requestAllMenuItems) {
 		StringBuffer sb = new StringBuffer();
 		String delim = "";

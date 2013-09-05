@@ -33,7 +33,7 @@ repositories {
   maven { url 'http://repo.springsource.org/milestone/'}
 }
 ```
-    
+
 `build.gradle`
 ```gradle
   compile 'org.springframework.security:spring-security-web:3.2.0.M2'
@@ -102,7 +102,7 @@ The `configure`, overridden method from `WebSecurityConfigurerAdapter`, method p
         .formLogin();
 ```
 
-Here, you've configured URL level protection using the `http.authorizeUrls()` method. The `http.authorizeUrls()` method protects the /checkout and /order/* urls, ensuring that only users with the USER role can access them.  
+Here, you've configured URL level protection using the `http.authorizeUrls()` method. The `http.authorizeUrls()` method protects the /checkout and /order/* urls, ensuring that only users with the USER role can access them.
 
 This will force users to log in before checking out, and ensure that only logged in users can view orders.  The `formLogin()` method call instructs Spring Security that users will login via an HTML form.  We give no further information on how this will work, and so Spring Security will generate a new HTML form and URL for you available on `/login`.
 
@@ -188,7 +188,7 @@ public class WebAppInitializer extends
 
 	@Override
 	protected Filter[] getServletFilters() {
-		
+
 		CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
 		characterEncodingFilter.setEncoding("UTF-8");
 		return new Filter[] { characterEncodingFilter, new SiteMeshFilter()};

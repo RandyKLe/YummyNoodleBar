@@ -20,7 +20,7 @@ You will continue working within the Web domain, first created in [step 2](../2/
 
 The Basket you created in the last section will contain all the items that a user wants to order.  When they want to place their Order, you need to also collect
 
-To do this you will create a new Controller, and have that Controller accept a Command Object.  
+To do this you will create a new Controller, and have that Controller accept a Command Object.
 
 A command Object is a bean that is used to model an HTTP request.  It does this by automatically mapping request parameters onto the properties of the bean.   These properties can then be tested using *Validation*.
 
@@ -100,12 +100,12 @@ public class CheckoutIntegrationTest {
 
 	@Before
 	public void setup() {
-		
-		
+
+
 		MockitoAnnotations.initMocks(this);
-		
+
 		controller.setBasket(new Basket());
-		
+
 		mockMvc = standaloneSetup(controller).setViewResolvers(viewResolver())
 				.build();
 	}
@@ -148,7 +148,7 @@ public class CheckoutIntegrationTest {
 		UUID id = UUID.randomUUID();
 
 		when(orderService.createOrder(any(CreateOrderEvent.class))).thenReturn(newOrder(id));
-		
+
 		mockMvc.perform(post("/checkout")
 				.param("name", CUSTOMER_NAME)
 				.param("address1", ADDRESS1)
@@ -171,7 +171,7 @@ public class CheckoutIntegrationTest {
 	        )));
 	//@formatter:on
 	}
-	
+
 	@Test
 	public void thatBasketIsEmptyOnSuccess() throws Exception {
 		UUID id = UUID.randomUUID();
@@ -179,7 +179,7 @@ public class CheckoutIntegrationTest {
 		when(orderService.createOrder(any(CreateOrderEvent.class))).thenReturn(newOrder(id));
 
 		controller.getBasket().add(standardWebMenuItem());
-		
+
 		mockMvc.perform(
 				post("/checkout").param("name", CUSTOMER_NAME)
 								 .param("address1", ADDRESS1)
@@ -206,12 +206,12 @@ TODO Describe setup of a test with a view resolver.
 ```java
 	@Before
 	public void setup() {
-		
-		
+
+
 		MockitoAnnotations.initMocks(this);
-		
+
 		controller.setBasket(new Basket());
-		
+
 		mockMvc = standaloneSetup(controller).setViewResolvers(viewResolver())
 				.build();
 	}
@@ -245,7 +245,7 @@ You could parse these variables yourself and check their contents according to w
 
 The Command Object is a class that Spring will map the POST variables onto, parsing them into the given types on the class.  For example, if you have an `int` property on the Command Object, Spring will take the textual value supplied in the request and attempt to parse an `int` out of it.   This process of automatic parsing and conversion is known as *Binding*, and you can find out more in the [reference documentation](https://docs.springframework.io/spring/docs/3.2.4.RELEASE/spring-framework-reference/html/)
 
-Command Objects are also the ideal place for validation.  
+Command Objects are also the ideal place for validation.
 
 Create a new entity class, `CustomerInfo`, like so.
 
@@ -396,13 +396,13 @@ public class CheckoutController {
 }
 ```
 
-The controller provides two implementations for the same URL `/checkout`. 
+The controller provides two implementations for the same URL `/checkout`.
 
 If you access the URL with a HTTP GET, you will provided with the /checkout view (which will be resolved to the checkout.jsp).
 
 If you access the URL with a HTTP POST, then the Controller expects that a form has been submitted.  To process this form, it uses the Command Object `customerInfo`, of type `CustomerInfo`.
 
-You will notice the `@ModelAttribute` annotation on the `customerInfo` parameter, and a matching method below 
+You will notice the `@ModelAttribute` annotation on the `customerInfo` parameter, and a matching method below
 
 `src/main/java/com/yummynoodlebar/web/controller/CheckoutController.java`
 ```java
@@ -426,7 +426,64 @@ Now that the checkout URL is available and tested, its time to add the View to s
 
 This view needs to populate the CustomerInfo bean
 
-IMPORT/complete/src/webapp/WEB-INF/views/checkout.jsp
+`src/main/webapp/WEB-INF/views/checkout.jsp`
+```jsp
+<%@ page contentType="text/html;charset=UTF-8" language="java"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<html>
+<head>
+<title>Place your order</title>
+</head>
+<body>
+	<div class="hero-unit">
+		<h3>Where do we deliver your Order?</h3>
+		<p>
+			<a class="btn btn-primary btn-large" href="<spring:url value="/showBasket" htmlEscape="true" />">Back to basket</a>
+		</p>
+
+	</div>
+
+	<div class="row-fluid">
+		<div class="span8">
+
+            <c:if test="${not empty message}">
+                <div id="message" class="alert alert-info">
+                    ${message}
+                </div>
+            </c:if>
+
+            <form:form commandName="customerInfo">
+                <table>
+                    <tr>
+                        <td>Name:</td>
+                        <td><form:input path="name" /></td>
+                        <td><form:errors path="name" /></td>
+                    </tr>
+
+                    <tr>
+                        <td>Address:</td>
+                        <td><form:input path="address1" /></td>
+                        <td><form:errors path="address1"  /></td>
+                    </tr>
+                    <tr>
+                        <td>Postal Code:</td>
+                        <td><form:input path="postcode" /></td>
+                        <td><form:errors path="postcode"  /></td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <input type="submit" value="Place order" />
+                        </td>
+                    </tr>
+                </table>
+            </form:form>
+		</div>
+	</div>
+</body>
+</html>
+```
 
 ### Show the Order Status
 
@@ -472,7 +529,7 @@ import com.yummynoodlebar.web.controller.fixture.WebDataFixture;
 public class OrderStatusIntegrationTest {
 
 	private static final String ORDER_VIEW = "/WEB-INF/views/order.jsp";
-	
+
 	private static UUID uuid;
 
 	MockMvc mockMvc;
@@ -501,31 +558,31 @@ public class OrderStatusIntegrationTest {
 
 	@Test
 	public void thatOrderViewIsForwardedTo() throws Exception {
-		
+
 		when(orderService.requestOrderDetails(any(RequestOrderDetailsEvent.class))).thenReturn(orderDetailsEvent(uuid));
 		when(orderService.requestOrderStatus(any(RequestOrderStatusEvent.class))).thenReturn(orderStatusEvent(uuid));
-		
+
 		mockMvc.perform(get("/order/" + uuid))
 		.andExpect(status().isOk())
 		.andExpect(forwardedUrl(ORDER_VIEW));
 	}
-	
+
 	@Test
 	public void thatOrderStatusIsPutInModel() throws Exception {
-		
+
 		when(orderService.requestOrderDetails(any(RequestOrderDetailsEvent.class))).thenReturn(orderDetailsEvent(uuid));
 		when(orderService.requestOrderStatus(any(RequestOrderStatusEvent.class))).thenReturn(orderStatusEvent(uuid));
-		
+
 		mockMvc.perform(get("/order/" + uuid))
 			.andExpect(model().attributeExists("orderStatus"))
 			.andExpect(model().attribute("orderStatus", hasProperty("name", equalTo(WebDataFixture.CUSTOMER_NAME))))
 			.andExpect(model().attribute("orderStatus", hasProperty("status", equalTo(WebDataFixture.STATUS_RECEIVED))));
-		
+
 		verify(orderService).requestOrderDetails(Matchers.<RequestOrderDetailsEvent>argThat(
 				org.hamcrest.Matchers.<RequestOrderDetailsEvent>hasProperty("key", equalTo(uuid))));
 		verify(orderService).requestOrderStatus(any(RequestOrderStatusEvent.class));
 	}
-		
+
 }
 ```
 
@@ -588,7 +645,38 @@ public class OrderStatusController {
 
 Lastly, create the view for the order and its status.
 
-IMPORT/complete/src/webapp/WEB-INF/views/order.jsp
+`src/main/webapp/WEB-INF/views/order.jsp`
+```jsp
+<%@ page contentType="text/html;charset=UTF-8" language="java"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<html>
+<head>
+<title>Order Confirmed</title>
+</head>
+<body>
+	<div class="hero-unit">
+		<h3>Your order is confirmed</h3>
+
+	</div>
+
+	<div class="row-fluid">
+		<div class="span8">
+			<p class="text-info">${orderStatus.name} thanks for your order</p>
+			<p class="text-info">Your order number is ${orderStatus.orderId}</p>
+           	<p class="text-info">The estimate for cooking is 20 minutes</p>
+
+           	<p class="text-success">The status is currently ${orderStatus.status}</p>
+
+            <div>
+                Refresh this page to see updates to the status
+            </div>
+		</div>
+	</div>
+</body>
+</html>
+```
 
 ## Summary
 

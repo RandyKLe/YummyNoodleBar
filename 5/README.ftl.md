@@ -107,7 +107,7 @@ Now that the checkout URL is available and tested, its time to add the View to s
 
 This view needs to populate the CustomerInfo bean
 
-IMPORT/complete/src/webapp/WEB-INF/views/checkout.jsp
+!!!IMPORT path="src/main/webapp/WEB-INF/views/checkout.jsp" prefix="complete"
 
 ### Show the Order Status
 
@@ -129,7 +129,7 @@ Now that you have a test, you need to implement the controller, which will look 
 
 Lastly, create the view for the order and its status.
 
-IMPORT/complete/src/webapp/WEB-INF/views/order.jsp
+!!!IMPORT path="src/main/webapp/WEB-INF/views/order.jsp" prefix="complete"
 
 ## Summary
 

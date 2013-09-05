@@ -75,10 +75,7 @@ You need to create a new View for the SiteController to render.
 
 Create a new file `home.jsp`
 
-TODO, need to embed a view, but fpp barfs on both importing via snippet and directly embedding... :-(
-```html
-
-```
+!!!IMPORT path="src/main/webapp/WEB-INF/views/home.jsp" prefix="complete"
 
 This JSP reads the model provided by the Controller, namely the `basket` and `menuItems` properties.
 

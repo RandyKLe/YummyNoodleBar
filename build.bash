@@ -15,9 +15,11 @@ ORIG=`pwd`
 
 for loc in "${doc_locations[@]}";
 do
-  echo " $loc/README.ftl.md -> $loc/README.md"
+  echo " $loc/README.ftl.md -> $loc/README.stage2.md -> $loc/README.md"
   cd $loc
-  cat README.ftl.md | fpp > README.md
+  cat README.ftl.md | fpp > README.stage2.md
+  $ORIG/stage2 README.stage2.md > README.md
+  rm -f README.stage2.md
   cd $ORIG
 done
 

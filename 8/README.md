@@ -4,7 +4,7 @@ You and Yummy Noodle Bar have come a long way!
 
 Here's what you did to build your Web front end:
 
-* [Constructed a Web Integration domain](../1/) that effectively encapsulates the concerns of a Web front end without corrupting the core components of the Yummy Noodle Bar. 
+* [Constructed a Web Integration domain](../1/) that effectively encapsulates the concerns of a Web front end without corrupting the core components of the Yummy Noodle Bar.
 * [Implemented Spring MVC Controllers and returned data](../2/).
 * [Understood the Spring and Java Web configuration and implemented it for you application](../3/).
 * Ran your Web Front end service using Gradle as well as packaged your service as a WAR file.

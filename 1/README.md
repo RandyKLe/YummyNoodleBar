@@ -8,7 +8,7 @@ The user visible front end of your server (the Web domain) that you will expose 
 
 To manage this friction you need to create concepts and components in the Web domain that are unique to, and can evolve at the rate needed by, the Web domain itself. This may result in similar types of components to those in the Core domain but because their purpose will be very different, the similarities are superficial.
 
-In the Core domain the concepts are captured as part of the internal ubiquitous language of the application's domain. In the Web domain the concepts are captured as they are used purely for the purpose of exposing the public Web front end. 
+In the Core domain the concepts are captured as part of the internal ubiquitous language of the application's domain. In the Web domain the concepts are captured as they are used purely for the purpose of exposing the public Web front end.
 
 ### Components of the Core application domain for Yummy Noodle Bar
 
@@ -27,7 +27,7 @@ This tutorial focuses on the Order domain classes, which can be acted upon by a 
 TODO, life presever for Web
 ![Life Preserver showing Orders Sub-Domain in Events Domain](../images/life-preserver-event-domain-focus-with-orders.png)
 
-Events in this case decouple out the domain concepts in the core of the Yummy Noodle Bar application from the various integrations that may need to access and work upon the core. 
+Events in this case decouple out the domain concepts in the core of the Yummy Noodle Bar application from the various integrations that may need to access and work upon the core.
 
 The event components associated with Orders that you will use for the Web include:
 
@@ -79,14 +79,14 @@ The following URLs will give that functionality in a way that the user can easil
 <tr><td>View the status of a given order</td><td>GET "/order/{id}"</td></tr>
 </tbody>
 </table>
- 
+
 
 Note that every POST URL immediately redirects to another.  This allows the user to manually refresh the page at will after the POST has occurred without causing a double submission.
 
 
 #### URI templates
 
-Each of the above URIs are expressed as *templates*; they contain blocks demarcated with {} in the URI.  
+Each of the above URIs are expressed as *templates*; they contain blocks demarcated with {} in the URI.
 
 For example, here the {} notation specifies where an Order with Order ID of 1 would have the following specific URL once the URI template is furnished with the Order Number:
 
@@ -98,7 +98,7 @@ An Order with an Order ID of 37 would have the following specific URI:
 
 ### Model View Controller (MVC)
 
-Model View Controller (MVC) is an architecture design that is popularly used in user interface development, whether desktop applications or for the web.   It defines three major responsibilities in a UI and specifies how they should interact with each other.  
+Model View Controller (MVC) is an architecture design that is popularly used in user interface development, whether desktop applications or for the web.   It defines three major responsibilities in a UI and specifies how they should interact with each other.
 
 This separation allows an application to be built in a more scalable and testable way.
 

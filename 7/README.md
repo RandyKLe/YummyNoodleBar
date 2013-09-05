@@ -5,7 +5,7 @@ Currently a stretch goal....
 
 to websocket or not ....
 
-long polling is a bit of jquery on the client, a server with a 
+long polling is a bit of jquery on the client, a server with a
 
 DeferredRequest<XX>
 

@@ -1,7 +1,7 @@
 Now that you have [written and tested a web controller](../2/), proudly added to your Life Preserver as shown below, it's time to bring the whole application together.
 
 ![Life Preserver Full showing Core Domain and Web Domain](../images/life-preserver-rest-domain-and-controllers-and-core-domain-zoom-out.png)
- 
+
 ## Step 3: Configuring a basic application
 
 At this point you are ready to:
@@ -49,20 +49,20 @@ import static junit.framework.TestCase.assertEquals;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {PersistenceConfig.class, CoreConfig.class})
 public class CoreDomainIntegrationTest {
-	
+
 	@Autowired
 	MenuService menuService;
 
   @Autowired
   OrderService orderService;
-			
+
 	@Test
 	public void thatAllMenuItemsReturned() {
-		
+
 	AllMenuItemsEvent allMenuItems = menuService.requestAllMenuItems(new RequestAllMenuItemsEvent());
-	
+
 	assertEquals(3, allMenuItems.getMenuItemDetails().size());
-			
+
 	}
 
   @Test
@@ -121,9 +121,9 @@ public class CoreConfig {
 
 }
 ```
- 
+
 The core event handler will dispatch events to the persistence domain, which will perform the actual persistence.  This currently uses a set of HashMaps wrapped by in memory 'repositories'.
- 
+
 `src/main/java/com/yummynoodlebar/config/PersistenceConfig.java`
 ```java
 package com.yummynoodlebar.config;
@@ -170,7 +170,7 @@ public class PersistenceConfig {
 	public MenuPersistenceService menuPersistenceService(MenuItemRepository menuItemRepository) {
 		return new MenuPersistenceEventHandler(menuItemRepository);
 	}
-	
+
 	private Map<String, MenuItem> defaultMenu() {
 		Map<String, MenuItem> items = new HashMap<String, MenuItem>();
 		items.put("YM1", menuItem("YM1", new BigDecimal("1.99"), 11, "Yummy Noodles"));
@@ -219,7 +219,7 @@ public class WebConfig {
 }
 ```
 
-The `@ComponentScan` attribute in JavaConfig specifies that your components should be found underneath the base Java package of `com.yummynoodlebar.web.controllers`. 
+The `@ComponentScan` attribute in JavaConfig specifies that your components should be found underneath the base Java package of `com.yummynoodlebar.web.controllers`.
 
 > **Note:** It's always a good idea to be as specific as possible when defining the place where component scanning should occur so that you don't accidentally initialize components you didn't expect!
 
@@ -257,9 +257,9 @@ public class WebDomainIntegrationTest {
 	private static final String STANDARD = "Yummy Noodles";
 	private static final String CHEF_SPECIAL = "Special Yummy Noodles";
 	private static final String LOW_CAL = "Low cal Yummy Noodles";
-	
+
 	private MockMvc mockMvc;
-	
+
 	@Autowired
 	WebApplicationContext webApplicationContext;
 
@@ -267,7 +267,7 @@ public class WebDomainIntegrationTest {
 	public void setup() {
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 	}
-	
+
 	@Test
 	public void thatTextReturned() throws Exception {
 		mockMvc.perform(get("/"))
@@ -281,7 +281,7 @@ public class WebDomainIntegrationTest {
 }
 ```
 
-You've already asserted the correctness of the collaboration between your controllers and the underlying service components in the Core Domain. 
+You've already asserted the correctness of the collaboration between your controllers and the underlying service components in the Core Domain.
 
 This test ensures that once everything is wired together, the wiring in the `WebConfig` is correct and the appropriate controllers are in attendance.
 
@@ -386,7 +386,7 @@ public class WebAppInitializer extends
 
 ## Running your Web service in a Web Container
 
-It's the moment of truth: can you execute your Web application? 
+It's the moment of truth: can you execute your Web application?
 
 To find out, first tell Gradle that you will use Tomcat. Update your `build.gradle` file to look like this:
 
@@ -435,11 +435,11 @@ dependencies {
 	runtime 'org.slf4j:slf4j-log4j12:1.7.5'
 
 	testCompile 'org.springframework:spring-test:3.2.3.RELEASE'
-	
+
 	testCompile 'junit:junit:4.11'
 	testCompile "org.mockito:mockito-all:1.9.5"
 	testCompile "org.hamcrest:hamcrest-library:1.3"
-	
+
 	provided 'javax.servlet:javax.servlet-api:3.0.1'
 }
 
@@ -458,8 +458,8 @@ tomcatRunWar.contextPath = ''
 
 You may notice at the bottom of the build file a setting to ensure the app runs at the root context:
 
-```groovy 
-tomcatRunWar.contextPath = ''   
+```groovy
+tomcatRunWar.contextPath = ''
 ```
 
 Now you can run the following from the command line to execute the new service, on port 8080 by default:

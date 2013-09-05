@@ -58,33 +58,33 @@ import com.yummynoodlebar.events.menu.RequestAllMenuItemsEvent;
 import com.yummynoodlebar.web.domain.Basket;
 
 public class SiteIntegrationTest {
-	
+
 	private static final String STANDARD = "Yummy Noodles";
 	private static final String CHEF_SPECIAL = "Special Yummy Noodles";
 	private static final String LOW_CAL = "Low cal Yummy Noodles";
 	private static final String FORWARDED_URL = "/WEB-INF/views/home.jsp";
 	private static final String VIEW = "/home";
-	
-	
+
+
 	MockMvc mockMvc;
-	
+
 	@InjectMocks
 	SiteController controller;
-	
+
 	@Mock
 	MenuService menuService;
-	
+
 	@Mock
 	Basket basket;
-	
+
 	@Before
 	public void setup() {
 		MockitoAnnotations.initMocks(this);
-						
+
 		mockMvc = standaloneSetup(controller)
 				.setViewResolvers(viewResolver())
 				.build();
-		
+
 		when(menuService.requestAllMenuItems(any(RequestAllMenuItemsEvent.class))).thenReturn(allMenuItems());
 
 	}
@@ -95,7 +95,7 @@ public class SiteIntegrationTest {
 		viewResolver.setSuffix(".jsp");
 		return viewResolver;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@Test
 	public void rootUrlPopulatesViewModel() throws Exception {
@@ -106,10 +106,10 @@ public class SiteIntegrationTest {
 		.andExpect(model().attribute("menuItems", hasItems(hasProperty("name", is(STANDARD)),
 															hasProperty("name", is(CHEF_SPECIAL)),
 															hasProperty("name", is(LOW_CAL))) ))
-		
-		.andExpect(model().attributeExists("basket"));													
+
+		.andExpect(model().attributeExists("basket"));
 	}
-	
+
 	@Test
 	public void rootUrlforwardsCorrectly() throws Exception {
 		mockMvc.perform(get("/"))
@@ -150,27 +150,27 @@ public class Basket  {
 
 	private Map<String, MenuItem> items = new HashMap<String, MenuItem>();
 
-	
+
 	public Basket() {
-		
+
 	}
 
 	public Basket(Map<String, MenuItem> items) {
 		this.items = items;
 	}
 
-	
+
 	public MenuItem add(MenuItem item) {
 		items.put(item.getId(), item);
 		return item;
 	}
 
-	
+
 	public void delete(String key) {
 		items.remove(key);
 	}
 
-	
+
 	public MenuItem findById(String key) {
 		for (MenuItem item : items.values()) {
 			if (item.getId().equals(key)) {
@@ -180,34 +180,34 @@ public class Basket  {
 		return null;
 	}
 
-	
+
 	public List<MenuItem> findAll() {
 		return new ArrayList<MenuItem>(items.values());
 	}
-	
+
 	public List<MenuItem> getItems() {
 		return findAll();
 	}
-	
+
 	public int getSize() {
 		return items.size();
 	}
 }
 ```
 
-The section 
+The section
 
 `src/main/java/com/yummynoodlebar/web/domain/Basket.java`
 ```java
 @Scope(value="session", proxyMode=ScopedProxyMode.TARGET_CLASS)
 ```
-    
+
 Specifies that a new instance of the bean will be created for every user session (`HttpSession`), and that this will be managed by an automatically generated proxy.
 
 The result of this is that you may inject the `Basket` as a dependency use `@Autowired` and can use normally, calls will be routed to the correct instance based on the current session by the automatically generated proxy.
 
 Next, you need to update the SiteController to take advantage of the new `Basket`
-Update `SiteController` to read 
+Update `SiteController` to read
 
 `src/main/java/com/yummynoodlebar/web/controller/SiteController.java`
 ```java
@@ -236,7 +236,7 @@ import java.util.List;
 public class SiteController {
 
 	private static final Logger LOG = LoggerFactory.getLogger(SiteController.class);
-	
+
 	@Autowired
 	private MenuService menuService;
 
@@ -249,10 +249,10 @@ public class SiteController {
 		model.addAttribute("menuItems",getMenuItems(menuService.requestAllMenuItems(new RequestAllMenuItemsEvent())));
 		return "/home";
 	}
-			
+
 	private List<MenuItem> getMenuItems(AllMenuItemsEvent requestAllMenuItems) {
 		List<MenuItem> menuDetails = new ArrayList<MenuItem>();
-		
+
 		for (MenuItemDetails menuItemDetails : requestAllMenuItems.getMenuItemDetails()) {
 			menuDetails.add(MenuItem.fromMenuDetails(menuItemDetails));
 		}
@@ -288,7 +288,7 @@ The implementation of the request has been altered.  Instead of showing text on 
 	}
 ```
 
-Lastly, you need to put the Basket into the model for the view to be able to read from.  
+Lastly, you need to put the Basket into the model for the view to be able to read from.
 This method takes the auto injected Basket and annotates it so that it is automatically merged into the `Model`.
 
 `src/main/java/com/yummynoodlebar/web/controller/SiteController.java`
@@ -309,9 +309,78 @@ You need to create a new View for the SiteController to render.
 
 Create a new file `home.jsp`
 
-TODO, need to embed a view, but fpp barfs on both importing via snippet and directly embedding... :-(
-```html
+`src/main/webapp/WEB-INF/views/home.jsp`
+```jsp
+<%@ page contentType="text/html;charset=UTF-8" language="java"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<html>
+<head>
+<title>Home</title>
+</head>
+<body>
+	<div class="hero-unit">
+		<h3>Yummy</h3>
 
+		<p>
+			<spring:message code="message.welcome" />
+		</p>
+		<p>
+			<a class="btn btn-primary btn-large"
+				href="http://www.simplicityitself.com/"><spring:message
+					code="message.home.learnMore" /></a>
+			<c:if test="${basket.size > 0}">
+				<a class="btn btn-primary btn-large" href="<spring:url value="/showBasket" htmlEscape="true" />">Look in your basket</a>
+			</c:if>
+		</p>
+
+	</div>
+
+	<div class="row-fluid">
+		<div class="span8">
+
+			<div id="message" class="alert alert-info">
+				<spring:message code="message.home.instructions" /> . Number of items in basket: ${basket.size}
+			</div>
+
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>Name</th>
+						<th>Cost</th>
+						<th>Mins to prepare</th>
+						<th>Action</th>
+					</tr>
+				</thead>
+				<tbody>
+
+					<c:forEach var="item" items="${menuItems}" varStatus="status">
+						<c:set var="itemFormId" value="item${status.index}"/>
+						<tr>
+							<td>${item.id}</td>
+							<td>${item.name}</td>
+							<td>${item.cost}</td>
+							<td>${item.minutesToPrepare}</td>
+							<td>
+
+							<form id="${itemFormId}" action="/addToBasket" method="POST">
+								<input id="id" name="id" type="hidden" value="${item.id}" />
+								<input id="name" name="name" type="hidden" value="${item.name}" />
+								<input id="cost" name="cost" type="hidden" value="${item.cost}" />
+								<input id="minutesToPrepare" name="minutesToPrepare" type="hidden" value="${item.minutesToPrepare}" />
+								<input type="submit" value="Add to basket" />
+							</form>
+							</td>
+						</tr>
+					</c:forEach>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</body>
+</html>
 ```
 
 This JSP reads the model provided by the Controller, namely the `basket` and `menuItems` properties.
@@ -358,22 +427,22 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import com.yummynoodlebar.web.domain.Basket;
 
 public class BasketQueryIntegrationTest {
-	
+
 	private static final String VIEW_NAME = "/showBasket";
 	private static final String FORWARDED_URL = "/WEB-INF/views/showBasket.jsp";
-	
+
 	MockMvc mockMvc;
-	
+
 	@InjectMocks
 	BasketQueryController controller;
-		
+
 	@Mock
 	Basket basket;
-	
+
 	@Before
 	public void setup() {
 		MockitoAnnotations.initMocks(this);
-						
+
 		mockMvc = standaloneSetup(controller)
 				.setViewResolvers(viewResolver())
 				.build();
@@ -385,13 +454,13 @@ public class BasketQueryIntegrationTest {
 		viewResolver.setSuffix(".jsp");
 		return viewResolver;
 	}
-	
+
 	@Test
 	public void thatViewBasket() throws Exception {
 		mockMvc.perform(get("/showBasket"))
 		.andDo(print())
 		.andExpect(status().isOk())
-		.andExpect(model().attributeExists("basket"))													
+		.andExpect(model().attributeExists("basket"))
 		.andExpect(view().name(is(VIEW_NAME)))
 		.andExpect(forwardedUrl(FORWARDED_URL));
 
@@ -425,25 +494,25 @@ import com.yummynoodlebar.web.domain.Basket;
 import com.yummynoodlebar.web.domain.MenuItem;
 
 public class BasketCommandIntegrationTest {
-		
+
 	private static final String MENU_ID = "LOOK_FOR_ME_IN_THE_LOG";
 	private static final String ADD_REDIRECTED_URL = "/";
 	private static final String ADD_VIEW = "redirect:/";
 	private static final String REMOVE_REDIRECTED_URL = "/showBasket";
 	private static final String REMOVE_VIEW = "redirect:/showBasket";
-	
+
 	MockMvc mockMvc;
-	
+
 	@InjectMocks
 	BasketCommandController controller;
-			
+
 	@Mock
 	Basket basket;
-	
+
 	@Before
 	public void setup() {
 		MockitoAnnotations.initMocks(this);
-						
+
 		mockMvc = standaloneSetup(controller)
 				.setViewResolvers(viewResolver())
 				.build();
@@ -455,8 +524,8 @@ public class BasketCommandIntegrationTest {
 		viewResolver.setSuffix(".jsp");
 		return viewResolver;
 	}
-	
-	
+
+
 	@Test
 	public void thatAddToBasketRedirects() throws Exception {
 		mockMvc.perform(post("/addToBasket"))
@@ -465,16 +534,16 @@ public class BasketCommandIntegrationTest {
 		.andExpect(view().name(ADD_VIEW))
 		.andExpect(redirectedUrl(ADD_REDIRECTED_URL));
 	}
-	
+
 	@Test
 	public void thatAddToBasketCollaborates() throws Exception {
-				
+
 		mockMvc.perform(post("/addToBasket"))
 		.andDo(print());
-		
+
 		verify(basket).add(any(MenuItem.class));
 	}
-	
+
 	@Test
 	public void thatRemoveFromBasketRedirects() throws Exception {
 		mockMvc.perform(post("/removeFromBasket"))
@@ -485,13 +554,13 @@ public class BasketCommandIntegrationTest {
 	}
 	@Test
 	public void thatRemoveFromBasketCollaborates() throws Exception {
-				
+
 		mockMvc.perform(post("/removeFromBasket/").param("id", MENU_ID))
 		.andDo(print());
-		
+
 		verify(basket).delete(MENU_ID);
 	}
-	
+
 
 }
 ```
@@ -519,19 +588,19 @@ import com.yummynoodlebar.web.domain.Basket;
 public class BasketQueryController {
 
 	private static final Logger LOG = LoggerFactory.getLogger(BasketQueryController.class);
-			
+
 	@Autowired
 	private Basket basket;
-		
+
 	@RequestMapping(value = "/showBasket" , method = RequestMethod.GET)
-	
+
 	public String show(Model model) {
 		LOG.debug("Show the basket contents");
 		return "/showBasket";
 	}
-			
-	
-	
+
+
+
 	@ModelAttribute("basket")
 	private Basket getBasket() {
 		return basket;
@@ -559,28 +628,28 @@ import com.yummynoodlebar.web.domain.MenuItem;
 public class BasketCommandController {
 
 	private static final Logger LOG = LoggerFactory.getLogger(BasketCommandController.class);
-			
+
 	@Autowired
 	private Basket basket;
-		
+
 	@RequestMapping(value = "/removeFromBasket" , method = RequestMethod.POST)
-	
+
 	public String remove(@ModelAttribute("fred") MenuItem menuItem) {
 		LOG.debug("Remove {} from the basket", menuItem.getId());
 		basket.delete(menuItem.getId());
 		return "redirect:/showBasket";
 	}
-	
+
 	@RequestMapping(value = "/addToBasket" , method = RequestMethod.POST)
-	
+
 	public String add(@ModelAttribute("joe") MenuItem menuItem) {
 		LOG.debug("Add {} from the basket", menuItem.getId());
 		basket.add(menuItem);
 		return "redirect:/";
 	}
-			
-	
-	
+
+
+
 	@ModelAttribute("basket")
 	private Basket getBasket() {
 		return basket;
@@ -622,12 +691,12 @@ import org.springframework.web.servlet.view.JstlView;
 @EnableWebMvc
 @ComponentScan(basePackages = {"com.yummynoodlebar.web.controller","com.yummynoodlebar.web.domain"})
 public class WebConfig extends WebMvcConfigurerAdapter {
-	
+
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
 	}
-	
+
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 
@@ -635,7 +704,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 		localeChangeInterceptor.setParamName("lang");
 		registry.addInterceptor(localeChangeInterceptor);
 	}
-	
+
 	@Bean
 	public LocaleResolver localeResolver() {
 
@@ -643,7 +712,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 		cookieLocaleResolver.setDefaultLocale(StringUtils.parseLocaleString("en"));
 		return cookieLocaleResolver;
 	}
-	
+
 	@Bean
 	public ViewResolver viewResolver() {
 
@@ -653,7 +722,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 		viewResolver.setSuffix(".jsp");
 		return viewResolver;
 	}
-	
+
 	@Bean
 	public MessageSource messageSource() {
 
@@ -748,10 +817,10 @@ public class WebAppInitializer extends
 	protected String[] getServletMappings() {
 		return new String[] { "/" };
 	}
-	
+
 	@Override
 	protected Filter[] getServletFilters() {
-		
+
 		CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
 		characterEncodingFilter.setEncoding("UTF-8");
 		return new Filter[] { characterEncodingFilter, new SiteMeshFilter()};
