@@ -4,13 +4,13 @@ Now that you have [configured and started your application](../2/), which appear
 
 ## Step 4: Creating rich HTML views using Thymeleaf
 
-Your application is now ready to:
+Your application is now ready to :-
 
-* Create a basket for the user to keep the items they want
-* Add views to generate HTML
-* Add view templates to keep common HTML
+* Create a basket for the user to keep the items they want in
+* Add views to generate HTML.
+* Add view fragments to keep common HTML in.
 
-You will be working within the Web domain, first created in [step 2](../2/).
+You will be working within the Web domain, first created in step 2.
 
 ## Creating a basket
 
@@ -28,7 +28,7 @@ Update `SiteControllerIntegrationTest` to read
 
 <@snippet path="src/test/java/com/yummynoodlebar/web/controller/SiteIntegrationTest.java" prefix="complete"/>
 
-This test again uses MockMVC and ensures that the SiteController creates a Model as expected, and also that it *forwards* to the correct url.  A forward is a Servlet concept that allows a piece of code to delegate processing to another at a given URL.  In this case, the test ensures that the SiteController sets the forward URL to the name of a JSP to render for the user.
+This test again uses MockMVC and ensures that the SiteController creates a Model as expected, and also that it *forwards* to the correct url.  A forward is a Servlet concept that allows a piece of code to delegate processing to another at a given URL.  In this case, the test ensures that the SiteController sets the forward URL to the name of a Thymeleaf template to render for the user.
 
 ### Create the basket
 
@@ -73,19 +73,23 @@ A View is a component that generates HTML that can be sent to the users browser 
 
 You need to create a new View for the SiteController to render.
 
-Create a new file `home.jsp`
+You will be using the Thymeleaf templating engine. This is a rich and powerful templating engine that provides all of its functionality as attributes on standard HTML.
 
-!!!IMPORT path="src/main/webapp/WEB-INF/views/home.jsp" prefix="complete"
+Before you can use it, you need to add it to your `build.gradle`
 
-This JSP reads the model provided by the Controller, namely the `basket` and `menuItems` properties.
+    <@snippet "build.gradle" "thymeleaf" "complete"/>
 
-TODO, need to embed a view, but fpp barfs ... :-(
-```html
+Now that Thymeleaf is available, create a new file `home.html`
 
-```
+!!!IMPORT path="src/main/webapp/WEB-INF/views/home.html" prefix="complete"
 
-This tag creates a URL based on the current Spring MVC setup, application root and base URL.   This allows you to customise the environment and have all your URLs automatically update.
+This Thymeleaf template reads the model provided by the Controller, namely the `basket` and `menuItems` properties.
 
+Create a view for viewing the current basket too. THis will look like :
+
+!!!IMPORT path="src/main/webapp/WEB-INF/views/showBasket.html" prefix="complete"
+
+> These files can be opened in your browser without starting Tomcat.  Thymeleaf refers to these as prototypes and has great support for allowing you to create realistic looking pages for development while they are just loaded off the disk, no server required.
 
 ## Updating the basket
 
@@ -113,54 +117,37 @@ TODO, discuss implementation a little. nothing special about these particularly.
 
 ## Update the Configuration
 
-You have made the Basket available, Controllers are correctly populating the Model, and you have written View JSPs; next, you need to set up Spring MVC to provide all the necessary configuration for these new components.
+You have made the Basket available, Controllers are correctly populating the Model, and you have written View Thymeleaf templates; next, you need to set up Spring MVC to provide all the necessary configuration for these new components.
 
 Update your `WebConfig` with the following
 
     <@snippet path="src/main/java/com/yummynoodlebar/config/WebConfig.java" prefix="complete"/>
 
-This sets up components scanning for the domain package as well, to pick up the Basket, and creates a set of infrastructure that is needed to support JSP views.
+This sets up components scanning for the domain package as well, to pick up the Basket, and creates a set of infrastructure that is needed to support Thymeleaf views.
 
-## Extracting common views with SiteMesh.
+## Extracting fragments
 
-Try running the application.
+You may notice in the above Thymeleafe template, that most, but not all HTML is included.  Some has been replaced with a placeholder.
+
+    <@snippet "src/main/webapp/WEB-INF/views/home.html" "layout" "/complete"/>
+
+This is a Thymeleaf import of an externally defined fragment.
+
+While developing with Thymeleaf, it is generally recommended that any page you make (including templates) are fully formed and viewable by a human.  This is different to many other frameworks, but gives some great benefits during development.
+    
+The above template references another called `layout.html`, and a fragment named `head` inside that.  Two others are also referenced in the `home` above, `left` and `footer`.  
+
+Create a new html file
+
+!!!IMPORT path="src/main/webapp/WEB-INF/views/layout.html" prefix="complete"
+
+Now, run the application
 
 ```
     ./gradlew tomcatRunWar
 ```
 
-If you visit [http://localhost:8080/](http://localhost:8080) you will see the site home url, with the current menu rendered as rather spartan HTML.
-
-It is not yet good looking, so you have a bit of work to do.  You are going to make a style that will be applied to all the pages and so you will need to share that common HTML and css between them.
-
-SiteMesh (link) is a library that allows merging of HTML pages together in a very natural way.  It integrates very well with Spring MVC.
-
-First, update `build.gradle` to include the dependency.
-
-<@snippet 
-"build.gradle" "sitemesh" "complete"/>
-
-Next, you need to create the new common HTML.
-
-TODO, link to style.jsp.  fpp is barfing on this.
-
-SiteMesh requires a configuration file that describes which files to use as templates and for what URLs.
-
- <@snippet path="src/main/webapp/WEB-INF/decorators.xml" prefix="complete"/>
-
-Lastly, SiteMesh operates as a Servlet Filter.  You must enable this in `WebAppInitializer`.
-
-Update this to read
-
- <@snippet path="src/main/java/com/yummynoodlebar/config/WebAppInitializer.java" prefix="complete"/>
-
-Running the application again (you need to stop and start it to pick up the changes)
-
-```sh
-$ ./gradlew tomcatRunWar
-```
-
-And visiting [http://localhost:8080/](http://localhost:8080), you will see a much richer HTML page, including the site url, and the basket page.
+And visit (http://localhost:8080/)[http://localhost:8080]. You will see a rich HTML page, including the site url, and the basket page.
 
 ## Summary
 

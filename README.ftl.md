@@ -102,7 +102,7 @@ Given the integration between your application and the outside world, consider t
 * [Step 1: Modelling the Core and Web Domains](1/)
 * [Step 2: Implementing URLs and returning data](2/)
 * [Step 3: Configuring a basic application](3/)
-* [Step 4: Creating rich HTML views using JSP and Spring Tags](4/)
+* [Step 4: Creating rich HTML views using Thymeleaf](4/)
 * [Step 5: Accepting user submitted data](5/)
 * [Step 6: Securing the Web Application](6/)
 * [Step 7: Updating the Browser from the Server](7/)

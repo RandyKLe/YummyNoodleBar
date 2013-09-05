@@ -399,6 +399,7 @@ apply plugin: 'propdeps'
 apply plugin: 'propdeps-maven'
 apply plugin: 'propdeps-idea'
 apply plugin: 'propdeps-eclipse'
+apply plugin: 'eclipse-wtp'
 
 println "PROJECT=" + project.name
 

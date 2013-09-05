@@ -18,7 +18,7 @@ You will continue working within the Web domain, first created in [step 2](../2/
 
 ### Create the Checkout Controller
 
-The Basket you created in the last section will contain all the items that a user wants to order.  When they want to place their Order, you need to also collect
+The Basket you created in the last section will contain all the items that a user wants to order.  When they want to place their Order, you need to also collect sufficient information from the customer to deliver their Order.
 
 To do this you will create a new Controller, and have that Controller accept a Command Object.  
 
@@ -26,7 +26,7 @@ A command Object is a bean that is used to model an HTTP request.  It does this 
 
 Java has a standard *Validation* API, which you will need to include in the dependencies section of `build.gradle`.
 
-<@snippet "build.gradle" "validation" "complete"/>
+    <@snippet "build.gradle" "validation" "complete"/>
 
 Since the Validation specification only defines an API, you need to include an implementation of that API as well.  Above, you have included Hibernate Validator.
 
@@ -36,11 +36,11 @@ As you should expect, you will first write a test to describe the features you w
 
 Add this test into your project.
 
-<@snippet path="src/test/java/com/yummynoodlebar/web/controller/CheckoutIntegrationTest.java" prefix="complete"/>
+    <@snippet path="src/test/java/com/yummynoodlebar/web/controller/CheckoutIntegrationTest.java" prefix="complete"/>
 
 TODO Describe setup of a test with a view resolver.
 
-<@snippet "src/test/java/com/yummynoodlebar/web/controller/CheckoutIntegrationTest.java" "init" "complete"/>
+    <@snippet "src/test/java/com/yummynoodlebar/web/controller/CheckoutIntegrationTest.java" "init" "complete"/>
 
 Following that are tests that check:
 
@@ -67,7 +67,7 @@ Command Objects are also the ideal place for validation.
 
 Create a new entity class, `CustomerInfo`, like so.
 
-<@snippet path="src/main/java/com/yummynoodlebar/web/domain/CustomerInfo.java" prefix="complete"/>
+    <@snippet path="src/main/java/com/yummynoodlebar/web/domain/CustomerInfo.java" prefix="complete"/>
 
 This entity concept will only exist in the Web Domain.  LP
 
@@ -81,17 +81,17 @@ Now that the Command Object is ready to represent the incoming POST request, you
 
 Create a new class `CheckoutController`, like so.
 
-<@snippet path="src/main/java/com/yummynoodlebar/web/controller/CheckoutController.java" prefix="complete"/>
+    <@snippet path="src/main/java/com/yummynoodlebar/web/controller/CheckoutController.java" prefix="complete"/>
 
 The controller provides two implementations for the same URL `/checkout`. 
 
-If you access the URL with a HTTP GET, you will provided with the /checkout view (which will be resolved to the checkout.jsp).
+If you access the URL with a HTTP GET, you will provided with the /checkout view (which will be resolved to the checkout.html).
 
 If you access the URL with a HTTP POST, then the Controller expects that a form has been submitted.  To process this form, it uses the Command Object `customerInfo`, of type `CustomerInfo`.
 
 You will notice the `@ModelAttribute` annotation on the `customerInfo` parameter, and a matching method below 
 
-<@snippet "src/main/java/com/yummynoodlebar/web/controller/CheckoutController.java" "customerInfo" "complete"/>
+    <@snippet "src/main/java/com/yummynoodlebar/web/controller/CheckoutController.java" "customerInfo" "complete"/>
 
 Together, these declare the CustomerInfo class to be a Command Object. When the page is rendered for the first time on a `GET /checkout`, the method `getCustomerInfo` is called to generate the 'customerInfo' property in the model.  You could pre-populate this is you wanted to in the `getCustomerInfo` method.   This property is then available in the model for the View to use during rendering, which you will see in the next section.
 
@@ -107,7 +107,7 @@ Now that the checkout URL is available and tested, its time to add the View to s
 
 This view needs to populate the CustomerInfo bean
 
-!!!IMPORT path="src/main/webapp/WEB-INF/views/checkout.jsp" prefix="complete"
+!!!IMPORT path="src/main/webapp/WEB-INF/views/checkout.html" prefix="complete"
 
 ### Show the Order Status
 
@@ -117,19 +117,19 @@ Once the user has successfully checked out and placed their Order, you need to s
 
 This is a relatively straightforward addition to the code you've written before.  As with the CheckoutController, you first need to write a test, like so.
 
-<@snippet path="src/test/java/com/yummynoodlebar/web/controller/OrderStatusIntegrationTest.java" prefix="complete"/>
+    <@snippet path="src/test/java/com/yummynoodlebar/web/controller/OrderStatusIntegrationTest.java" prefix="complete"/>
 
 #### Implement the controller
 
 Now that you have a test, you need to implement the controller, which will look something like this
 
-<@snippet path="src/main/java/com/yummynoodlebar/web/controller/OrderStatusController.java" prefix="complete"/>
+    <@snippet path="src/main/java/com/yummynoodlebar/web/controller/OrderStatusController.java" prefix="complete"/>
 
 #### Create the View
 
 Lastly, create the view for the order and its status.
 
-!!!IMPORT path="src/main/webapp/WEB-INF/views/order.jsp" prefix="complete"
+!!!IMPORT path="src/main/webapp/WEB-INF/views/order.html" prefix="complete"/>
 
 ## Summary
 

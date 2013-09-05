@@ -2,15 +2,15 @@ Now that you have [configured and started your application](../2/), which appear
 
 ![Life Preserver Full showing Core Domain, Configuration and Web Domains](TODO)
 
-## Step 4: Creating rich HTML views using JSP and Spring Tags
+## Step 4: Creating rich HTML views using Thymeleaf
 
-Your application is now ready to:
+Your application is now ready to :-
 
-* Create a basket for the user to keep the items they want
-* Add views to generate HTML
-* Add view templates to keep common HTML
+* Create a basket for the user to keep the items they want in
+* Add views to generate HTML.
+* Add view fragments to keep common HTML in.
 
-You will be working within the Web domain, first created in [step 2](../2/).
+You will be working within the Web domain, first created in step 2.
 
 ## Creating a basket
 
@@ -123,7 +123,7 @@ public class SiteIntegrationTest {
 }
 ```
 
-This test again uses MockMVC and ensures that the SiteController creates a Model as expected, and also that it *forwards* to the correct url.  A forward is a Servlet concept that allows a piece of code to delegate processing to another at a given URL.  In this case, the test ensures that the SiteController sets the forward URL to the name of a JSP to render for the user.
+This test again uses MockMVC and ensures that the SiteController creates a Model as expected, and also that it *forwards* to the correct url.  A forward is a Servlet concept that allows a piece of code to delegate processing to another at a given URL.  In this case, the test ensures that the SiteController sets the forward URL to the name of a Thymeleaf template to render for the user.
 
 ### Create the basket
 
@@ -307,43 +307,184 @@ A View is a component that generates HTML that can be sent to the users browser 
 
 You need to create a new View for the SiteController to render.
 
-Create a new file `home.jsp`
+You will be using the Thymeleaf templating engine. This is a rich and powerful templating engine that provides all of its functionality as attributes on standard HTML.
 
-`src/main/webapp/WEB-INF/views/home.jsp`
+Before you can use it, you need to add it to your `build.gradle`
+
+`build.gradle`
+```gradle
+  compile 'org.thymeleaf:thymeleaf-spring3:2.0.18'
+```
+
+Now that Thymeleaf is available, create a new file `home.html`
+
+`src/main/webapp/WEB-INF/views/home.html`
 ```jsp
-<%@ page contentType="text/html;charset=UTF-8" language="java"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<!DOCTYPE html>
 <html>
 <head>
-<title>Home</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="description" content=""/>
+    <meta name="author" content="Simplicity Itself"/>
+
+    <title>Yummy Noodle Bar</title>
+
+    <link href="/resources/css/bootstrap.min.css" rel="stylesheet">
+    </link>
+    <style type="text/css">
+        body {
+            padding-top: 60px;
+            padding-bottom: 40px;
+        }
+
+        .sidebar-nav {
+            padding: 9px 0;
+        }
+    </style>
+    <!-- See http://twitter.github.com/bootstrap/scaffolding.html#responsive -->
+    <link href="/resources/css/bootstrap-responsive.min.css" rel="stylesheet">
+    </link>
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
 </head>
 <body>
-	<div class="hero-unit">
-		<h3>Yummy</h3>
+<!-- {!begin layout} -->
+<div th:include="layout :: head"></div>
+<!-- {!end layout} -->
 
-		<p>
-			<spring:message code="message.welcome" />
-		</p>
-		<p>
-			<a class="btn btn-primary btn-large"
-				href="http://www.simplicityitself.com/"><spring:message
-					code="message.home.learnMore" /></a>
-			<c:if test="${basket.size > 0}">
-				<a class="btn btn-primary btn-large" href="<spring:url value="/showBasket" htmlEscape="true" />">Look in your basket</a>
-			</c:if>
-		</p>
+<div class="container-fluid">
+    <div th:include="layout :: left"></div>
+    <div class="hero-unit span9">
+        <h3>Yummy</h3>
 
+        <p>
+            Welcome to the home of all things Noodle
+        </p>
+
+        <p>
+            <a class="btn btn-primary btn-large" href="http://www.simplicityitself.com/">Learn more about us</a>
+            <a th:if="${basket.size &gt; 0}"
+               class="btn btn-primary btn-large"
+               th:href="@{/showBasket}">Look in your basket</a>
+        </p>
+
+    </div>
+
+    <div class="row-fluid">
+        <div class="span9">
+
+            <div id="message" class="alert alert-info">
+                Select from the menu. Currently your basket contains <em th:text="${basket.size}">SOME</em> truly
+                scrumptious item(s).
+            </div>
+
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Cost</th>
+                    <th>Mins to prepare</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                <tr th:each="item,status : ${menuItems}">
+                    <td th:text="${item.id}"></td>
+                    <td th:text="${item.name}"></td>
+                    <td th:text="${item.cost}"></td>
+                    <td th:text="${item.minutesToPrepare}"></td>
+                    <td>
+                        <form action="/addToBasket" method="POST">
+                            <input id="id" name="id" type="hidden" th:value="${item.id}"/>
+                            <input id="name" name="name" type="hidden" th:value="${item.name}"/>
+                            <input id="cost" name="cost" type="hidden" th:value="${item.cost}"/>
+                            <input id="minutesToPrepare" name="minutesToPrepare" type="hidden"
+                                   th:value="${item.minutesToPrepare}"/>
+                            <input type="submit" value="Add to basket"/>
+                        </form>
+                    </td>
+
+                </tr>
+                <!-- This example data will be removed by thmyeleafe during processing and replaced with the rows generated above -->
+                <tr th:remove="all">
+                    <td>Yummy1</td>
+                    <td>Noodles, with Cheese</td>
+                    <td>$13.99</td>
+                    <td>15</td>
+                </tr>
+                </tbody>
+            </table>
+            <div th:include="layout :: foot"></div>
+
+
+        </div>
+    </div>
+</div>
+</body>
+</html>
+```
+
+This Thymeleaf template reads the model provided by the Controller, namely the `basket` and `menuItems` properties.
+
+Create a view for viewing the current basket too. THis will look like :
+
+`src/main/webapp/WEB-INF/views/showBasket.html`
+```jsp
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="description" content=""/>
+    <meta name="author" content="Simplicity Itself"/>
+
+    <title>Yummy Noodle Bar</title>
+
+    <link href="/resources/css/bootstrap.min.css" rel="stylesheet">
+    </link>
+    <style type="text/css">
+        body {
+            padding-top: 60px;
+            padding-bottom: 40px;
+        }
+
+        .sidebar-nav {
+            padding: 9px 0;
+        }
+    </style>
+    <!-- See http://twitter.github.com/bootstrap/scaffolding.html#responsive -->
+    <link href="/resources/css/bootstrap-responsive.min.css" rel="stylesheet">
+    </link>
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+</head>
+<body>
+
+<div th:include="layout :: head"></div>
+
+<div class="container-fluid">
+    <div th:include="layout :: left"></div>
+
+	<div class="hero-unit span9">
+		<h3>Basket</h3>
+		<p>
+			<a class="btn btn-primary btn-large" href="/">Continue eating</a>
+            <a th:if="${basket.size > 0}"
+               class="btn btn-primary btn-large" href="/checkout">Go ahead and order</a>
+		</p>
 	</div>
 
 	<div class="row-fluid">
 		<div class="span8">
-
-			<div id="message" class="alert alert-info">
-				<spring:message code="message.home.instructions" /> . Number of items in basket: ${basket.size}
-			</div>
-
 			<table class="table table-striped">
 				<thead>
 					<tr>
@@ -355,43 +496,29 @@ Create a new file `home.jsp`
 					</tr>
 				</thead>
 				<tbody>
-
-					<c:forEach var="item" items="${menuItems}" varStatus="status">
-						<c:set var="itemFormId" value="item${status.index}"/>
-						<tr>
-							<td>${item.id}</td>
-							<td>${item.name}</td>
-							<td>${item.cost}</td>
-							<td>${item.minutesToPrepare}</td>
-							<td>
-
-							<form id="${itemFormId}" action="/addToBasket" method="POST">
-								<input id="id" name="id" type="hidden" value="${item.id}" />
-								<input id="name" name="name" type="hidden" value="${item.name}" />
-								<input id="cost" name="cost" type="hidden" value="${item.cost}" />
-								<input id="minutesToPrepare" name="minutesToPrepare" type="hidden" value="${item.minutesToPrepare}" />
-								<input type="submit" value="Add to basket" />
-							</form>
-							</td>
-						</tr>
-					</c:forEach>
+                    <tr th:each="basketItem : ${basket.items}">
+                        <td th:text="${basketItem.id}"></td>
+                        <td th:text="${basketItem.name}"></td>
+                        <td th:text="${basketItem.cost}"></td>
+                        <td th:text="${basketItem.minutesToPrepare}"></td>
+                        <td>
+                            <form id="${itemFormId}" action="/removeFromBasket" method="POST">
+                                <input id="id" name="id" type="hidden" th:value="${basketItem.id}" />
+                                <input type="submit" value="Remove" />
+                            </form>
+                        </td>
+                    </tr>
 				</tbody>
 			</table>
+            <div th:include="layout :: foot"></div>
 		</div>
 	</div>
+</div>
 </body>
 </html>
 ```
 
-This JSP reads the model provided by the Controller, namely the `basket` and `menuItems` properties.
-
-TODO, need to embed a view, but fpp barfs ... :-(
-```html
-
-```
-
-This tag creates a URL based on the current Spring MVC setup, application root and base URL.   This allows you to customise the environment and have all your URLs automatically update.
-
+> These files can be opened in your browser without starting Tomcat.  Thymeleaf refers to these as prototypes and has great support for allowing you to create realistic looking pages for development while they are just loaded off the disk, no server required.
 
 ## Updating the basket
 
@@ -662,7 +789,7 @@ TODO, discuss implementation a little. nothing special about these particularly.
 
 ## Update the Configuration
 
-You have made the Basket available, Controllers are correctly populating the Model, and you have written View JSPs; next, you need to set up Spring MVC to provide all the necessary configuration for these new components.
+You have made the Basket available, Controllers are correctly populating the Model, and you have written View Thymeleaf templates; next, you need to set up Spring MVC to provide all the necessary configuration for these new components.
 
 Update your `WebConfig` with the following
 
@@ -686,156 +813,164 @@ import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.spring3.SpringTemplateEngine;
+import org.thymeleaf.spring3.view.ThymeleafViewResolver;
+import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 @Configuration
 @EnableWebMvc
 @ComponentScan(basePackages = {"com.yummynoodlebar.web.controller","com.yummynoodlebar.web.domain"})
 public class WebConfig extends WebMvcConfigurerAdapter {
 
-	@Override
-	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
-	}
+  @Override
+  public void addResourceHandlers(ResourceHandlerRegistry registry) {
+    registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
+  }
 
-	@Override
-	public void addInterceptors(InterceptorRegistry registry) {
+  @Override
+  public void addInterceptors(InterceptorRegistry registry) {
 
-		LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
-		localeChangeInterceptor.setParamName("lang");
-		registry.addInterceptor(localeChangeInterceptor);
-	}
+    LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
+    localeChangeInterceptor.setParamName("lang");
+    registry.addInterceptor(localeChangeInterceptor);
+  }
 
-	@Bean
-	public LocaleResolver localeResolver() {
+  @Bean
+  public LocaleResolver localeResolver() {
 
-		CookieLocaleResolver cookieLocaleResolver = new CookieLocaleResolver();
-		cookieLocaleResolver.setDefaultLocale(StringUtils.parseLocaleString("en"));
-		return cookieLocaleResolver;
-	}
+    CookieLocaleResolver cookieLocaleResolver = new CookieLocaleResolver();
+    cookieLocaleResolver.setDefaultLocale(StringUtils.parseLocaleString("en"));
+    return cookieLocaleResolver;
+  }
 
-	@Bean
-	public ViewResolver viewResolver() {
+  @Bean
+  public ServletContextTemplateResolver templateResolver() {
+    ServletContextTemplateResolver resolver = new ServletContextTemplateResolver();
+    resolver.setPrefix("/WEB-INF/views/");
+    resolver.setSuffix(".html");
+    //NB, selecting HTML5 as the template mode.
+    resolver.setTemplateMode("HTML5");
+    resolver.setCacheable(false);
+    return resolver;
 
-		InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
-		viewResolver.setViewClass(JstlView.class);
-		viewResolver.setPrefix("/WEB-INF/views");
-		viewResolver.setSuffix(".jsp");
-		return viewResolver;
-	}
+  }
 
-	@Bean
-	public MessageSource messageSource() {
+  public SpringTemplateEngine templateEngine() {
+    SpringTemplateEngine engine = new SpringTemplateEngine();
+    engine.setTemplateResolver(templateResolver());
+    return engine;
+  }
 
-		ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
-		messageSource.setBasenames("classpath:messages/messages", "classpath:messages/validation");
-		// if true, the key of the message will be displayed if the key is not
-		// found, instead of throwing a NoSuchMessageException
-		messageSource.setUseCodeAsDefaultMessage(true);
-		messageSource.setDefaultEncoding("UTF-8");
-		// # -1 : never reload, 0 always reload
-		messageSource.setCacheSeconds(0);
-		return messageSource;
-	}
+  @Bean
+  public ViewResolver viewResolver() {
+
+    ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();
+    viewResolver.setTemplateEngine(templateEngine());
+    viewResolver.setOrder(1);
+    viewResolver.setViewNames(new String[]{"*"});
+    viewResolver.setCache(false);
+    return viewResolver;
+  }
+
+  @Bean
+  public MessageSource messageSource() {
+
+    ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
+    messageSource.setBasenames("classpath:messages/messages", "classpath:messages/validation");
+    // if true, the key of the message will be displayed if the key is not
+    // found, instead of throwing a NoSuchMessageException
+    messageSource.setUseCodeAsDefaultMessage(true);
+    messageSource.setDefaultEncoding("UTF-8");
+    // # -1 : never reload, 0 always reload
+    messageSource.setCacheSeconds(0);
+    return messageSource;
+  }
 
 }
 ```
 
-This sets up components scanning for the domain package as well, to pick up the Basket, and creates a set of infrastructure that is needed to support JSP views.
+This sets up components scanning for the domain package as well, to pick up the Basket, and creates a set of infrastructure that is needed to support Thymeleaf views.
 
-## Extracting common views with SiteMesh.
+## Extracting fragments
 
-Try running the application.
+You may notice in the above Thymeleafe template, that most, but not all HTML is included.  Some has been replaced with a placeholder.
+
+`src/main/webapp/WEB-INF/views/home.html`
+```html
+<div th:include="layout :: head"></div>
+```
+
+This is a Thymeleaf import of an externally defined fragment.
+
+While developing with Thymeleaf, it is generally recommended that any page you make (including templates) are fully formed and viewable by a human.  This is different to many other frameworks, but gives some great benefits during development.
+
+The above template references another called `layout.html`, and a fragment named `head` inside that.  Two others are also referenced in the `home` above, `left` and `footer`.
+
+Create a new html file
+
+`src/main/webapp/WEB-INF/views/layout.html`
+```jsp
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<body>
+
+<div th:fragment="head">
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="navbar-inner">
+            <div class="container-fluid">
+                <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </a>
+                <a class="brand" href="/">Yummy Noodle Bar</a>
+                <div class="nav-collapse collapse">
+                    <p class="navbar-text pull-right">
+
+                    </p>
+                    <ul class="nav">
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/showBasket">Basket</a></li>
+                    </ul>
+                </div> <!--/.nav-collapse -->
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div th:fragment="left">
+    <div class="well sidebar-nav span3">
+        <ul class="nav nav-list">
+            <li class="nav-header">Navigation could go here</li>
+            <li><a href="http://www.gopivotal.com/">Pivotal, Inc</a></li>
+            <li><a href="http://www.springsource.org/spring-xd">Spring XD</a></li>
+            <li><a href="http://www.simplicityitself.com/">Simples</a></li>
+        </ul>
+    </div>
+</div>
+
+<div th:fragment="foot">
+    <footer>
+        <p>&copy; Yummy Noodle Bar 2013</p>
+    </footer>
+</div>
+
+</body>
+
+</html>
+```
+
+Now, run the application
 
 ```
     ./gradlew tomcatRunWar
 ```
 
-If you visit [http://localhost:8080/](http://localhost:8080) you will see the site home url, with the current menu rendered as rather spartan HTML.
-
-It is not yet good looking, so you have a bit of work to do.  You are going to make a style that will be applied to all the pages and so you will need to share that common HTML and css between them.
-
-SiteMesh (link) is a library that allows merging of HTML pages together in a very natural way.  It integrates very well with Spring MVC.
-
-First, update `build.gradle` to include the dependency.
-
-`build.gradle`
-```gradle
-	compile 'opensymphony:sitemesh:2.4.2'
-```
-
-Next, you need to create the new common HTML.
-
-TODO, link to style.jsp.  fpp is barfing on this.
-
-SiteMesh requires a configuration file that describes which files to use as templates and for what URLs.
-
-`src/main/webapp/WEB-INF/decorators.xml`
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<decorators defaultdir="/WEB-INF/decorators/">
-
-	<excludes>
-        <pattern>/rss/*</pattern>
-    </excludes>
-
-    <decorator name="default" page="twitterBoostrapLayout.jsp">
-        <pattern>*</pattern>
-    </decorator>
-
-</decorators>
-```
-
-Lastly, SiteMesh operates as a Servlet Filter.  You must enable this in `WebAppInitializer`.
-
-Update this to read
-
-`src/main/java/com/yummynoodlebar/config/WebAppInitializer.java`
-```java
-package com.yummynoodlebar.config;
-
-import javax.servlet.Filter;
-
-import org.springframework.web.filter.CharacterEncodingFilter;
-import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
-
-import com.opensymphony.sitemesh.webapp.SiteMeshFilter;
-
-public class WebAppInitializer extends
-		AbstractAnnotationConfigDispatcherServletInitializer {
-
-	@Override
-	protected Class<?>[] getRootConfigClasses() {
-		return new Class<?>[] { PersistenceConfig.class, CoreConfig.class };
-	}
-
-	@Override
-	protected Class<?>[] getServletConfigClasses() {
-		return new Class<?>[] { WebConfig.class };
-	}
-
-	@Override
-	protected String[] getServletMappings() {
-		return new String[] { "/" };
-	}
-
-	@Override
-	protected Filter[] getServletFilters() {
-
-		CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
-		characterEncodingFilter.setEncoding("UTF-8");
-		return new Filter[] { characterEncodingFilter, new SiteMeshFilter()};
-	}
-
-}
-```
-
-Running the application again (you need to stop and start it to pick up the changes)
-
-```sh
-$ ./gradlew tomcatRunWar
-```
-
-And visiting [http://localhost:8080/](http://localhost:8080), you will see a much richer HTML page, including the site url, and the basket page.
+And visit (http://localhost:8080/)[http://localhost:8080]. You will see a rich HTML page, including the site url, and the basket page.
 
 ## Summary
 
