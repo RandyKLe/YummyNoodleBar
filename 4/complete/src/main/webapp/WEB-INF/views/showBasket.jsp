@@ -38,7 +38,7 @@
 							<td>${basketItem.cost}</td>
 							<td>${basketItem.minutesToPrepare}</td>
 							<td>
-							<form id="${itemFormId}" action="/removeFromBasket" method="POST">
+							<form id="${itemFormId}" action="<spring:url value="/removeFromBasket" htmlEscape="true" />" method="POST">
 								<input id="id" name="id" type="hidden" value="${basketItem.id}" />
 								<input type="submit" value="Remove" />
 							</form>

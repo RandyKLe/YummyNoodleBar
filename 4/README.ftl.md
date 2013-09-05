@@ -2,7 +2,7 @@ Now that you have [configured and started your application](../2/), which appear
 
 ![Life Preserver Full showing Core Domain, Configuration and Web Domains](TODO)
 
-## Step 4: Creating rich HTML views using JSP and Spring Tags
+## Step 4: Creating rich HTML views using Thymeleaf
 
 Your application is now ready to:
 

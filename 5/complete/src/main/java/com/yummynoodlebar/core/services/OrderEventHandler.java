@@ -18,19 +18,13 @@ public class OrderEventHandler implements OrderService {
   @Override
   public OrderCreatedEvent createOrder(CreateOrderEvent createOrderEvent) {
 
-    Order order = Order.fromOrderDetails(createOrderEvent.getDetails());
-
     //TODO, add validation of menu items
     //TODO, add order total calculation
     //TODO, add order time estimate calculation
-
+	//TODO  Think transaction boundary. Order and OrderStatus should be atomic
     OrderCreatedEvent event = ordersPersistenceService.createOrder(createOrderEvent);
 
     //TODO, where should this go?
-    /*OrderStatusEvent orderStatusEvent = ordersPersistenceService.setOrderStatus(
-        new SetOrderStatusEvent(order.getKey(), new OrderStatusDetails(order.getKey(),
-        UUID.randomUUID(), new Date(), "Order Created")));*/
-    
     OrderStatusEvent orderStatusEvent = ordersPersistenceService.setOrderStatus(
             new SetOrderStatusEvent(event.getNewOrderKey(), new OrderStatusDetails(event.getNewOrderKey(),
             UUID.randomUUID(), new Date(), "Order Created")));

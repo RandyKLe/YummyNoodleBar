@@ -36,7 +36,7 @@ public class SiteController {
 	public String getCurrentMenu(Model model) {
 		LOG.debug("Yummy MenuItemDetails to home view");
 		model.addAttribute("menuItems",getMenuItems(menuService.requestAllMenuItems(new RequestAllMenuItemsEvent())));
-		return "/home";
+		return "home";
 	}
 			
 	private List<MenuItem> getMenuItems(AllMenuItemsEvent requestAllMenuItems) {

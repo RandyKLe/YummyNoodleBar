@@ -11,12 +11,10 @@
 		<h3>Yummy</h3>
 
 		<p>
-			<spring:message code="message.welcome" />
+			Welcome to the home of all things Noodle
 		</p>
 		<p>
-			<a class="btn btn-primary btn-large"
-				href="http://www.simplicityitself.com/"><spring:message
-					code="message.home.learnMore" /></a>
+			<a class="btn btn-primary btn-large" href="http://www.simplicityitself.com/">Learn more about us</a>
 			<c:if test="${basket.size > 0}">
 				<a class="btn btn-primary btn-large" href="<spring:url value="/showBasket" htmlEscape="true" />">Look in your basket</a>
 			</c:if>
@@ -28,7 +26,7 @@
 		<div class="span8">
 
 			<div id="message" class="alert alert-info">
-				<spring:message code="message.home.instructions" /> . Number of items in basket: ${basket.size}
+				Select from the menu. Currently your basket contains <em>${basket.size}</em> truly scrumptious item<c:if test="${(basket.size > 1) || (basket.size == 0)}">s</c:if>.
 			</div>
 
 			<table class="table table-striped">
@@ -52,18 +50,26 @@
 							<td>${item.minutesToPrepare}</td>
 							<td>
 							
-							<form id="${itemFormId}" action="/addToBasket" method="POST">
+							<form id="${itemFormId}" action="<spring:url value="/addToBasket" htmlEscape="true" />" method="POST">
 								<input id="id" name="id" type="hidden" value="${item.id}" />
 								<input id="name" name="name" type="hidden" value="${item.name}" />
 								<input id="cost" name="cost" type="hidden" value="${item.cost}" />
 								<input id="minutesToPrepare" name="minutesToPrepare" type="hidden" value="${item.minutesToPrepare}" />
 								<input type="submit" value="Add to basket" />
 							</form>
+							
 							</td>
+							
+							
 						</tr>
+
 					</c:forEach>
+
 				</tbody>
 			</table>
+
+			
+
 		</div>
 	</div>
 </body>

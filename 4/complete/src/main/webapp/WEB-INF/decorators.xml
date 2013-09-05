@@ -5,7 +5,7 @@
         <pattern>/rss/*</pattern>
     </excludes>
 
-    <decorator name="default" page="twitterBoostrapLayout.jsp">
+    <decorator name="default" page="layout.jsp">
         <pattern>*</pattern>
     </decorator>
 
