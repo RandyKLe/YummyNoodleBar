@@ -44,7 +44,7 @@ public class CheckoutIntegrationTest {
 
 	private static final String CUSTOMER_NAME = "Customer Name";
 
-	private static final String CHECKOUT_VIEW = "/WEB-INF/views/checkout.jsp";
+	private static final String CHECKOUT_VIEW = "/WEB-INF/views/checkout.html";
 
 	MockMvc mockMvc;
 
@@ -70,7 +70,7 @@ public class CheckoutIntegrationTest {
 	private InternalResourceViewResolver viewResolver() {
 		InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
 		viewResolver.setPrefix("/WEB-INF/views");
-		viewResolver.setSuffix(".jsp");
+		viewResolver.setSuffix(".html");
 		return viewResolver;
 	}
   //{!end init}

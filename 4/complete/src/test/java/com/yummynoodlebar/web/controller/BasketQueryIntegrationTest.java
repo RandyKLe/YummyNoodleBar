@@ -22,7 +22,7 @@ import com.yummynoodlebar.web.domain.Basket;
 public class BasketQueryIntegrationTest {
 	
 	private static final String VIEW_NAME = "/showBasket";
-	private static final String FORWARDED_URL = "/WEB-INF/views/showBasket.jsp";
+	private static final String FORWARDED_URL = "/WEB-INF/views/showBasket.html";
 	
 	MockMvc mockMvc;
 	
@@ -44,7 +44,7 @@ public class BasketQueryIntegrationTest {
 	private InternalResourceViewResolver viewResolver() {
 		InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
 		viewResolver.setPrefix("/WEB-INF/views");
-		viewResolver.setSuffix(".jsp");
+		viewResolver.setSuffix(".html");
 		return viewResolver;
 	}
 	

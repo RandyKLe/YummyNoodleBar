@@ -31,7 +31,7 @@ import com.yummynoodlebar.web.controller.fixture.WebDataFixture;
 
 public class OrderStatusIntegrationTest {
 
-	private static final String ORDER_VIEW = "/WEB-INF/views/order.jsp";
+	private static final String ORDER_VIEW = "/WEB-INF/views/order.html";
 	
 	private static UUID uuid;
 
@@ -55,7 +55,7 @@ public class OrderStatusIntegrationTest {
 	private InternalResourceViewResolver viewResolver() {
 		InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
 		viewResolver.setPrefix("/WEB-INF/views");
-		viewResolver.setSuffix(".jsp");
+		viewResolver.setSuffix(".html");
 		return viewResolver;
 	}
 
