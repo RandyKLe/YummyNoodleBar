@@ -42,18 +42,18 @@ The event components associated with Orders that you will use for the Web includ
 
 When you are building a web application, the users you build it for are humans.  While this may seem obvious, it has massive implications for the design and model of your Web domain.
 
-Most importantly :-
+Most importantly :
 
 * Users expect to be able to visit any URL they see again. You should expect URLs to be copy and pasted.
 * Users expect to move around a website arbitrarily.
 * Users expect to use the back and forward buttons at will.
-* The users experience of HTTP GET and POST (from HTML forms) is dramatically different, a POST should only ever be used for submitting information, and never for navigation.
+* The users experience of HTTP GET and POST (from HTML forms) is dramatically different. A POST should only be used for submitting information, and never for navigation.
 
-Given the above
-* your URLs should be standalone and the server should be able to construct the entire page from the URL.
+Given the above:
+* Your URLs should be standalone and the server should be able to construct the entire page from the URL.
 * You should provide links between the related pages on your site and not attempt to constrain users into a particular flow.
 
-For the Yummy Noodle Bar, Users need to :
+For the Yummy Noodle Bar, Users need to:
 
 * View the Menu
 * Add and remove items from an order Basket

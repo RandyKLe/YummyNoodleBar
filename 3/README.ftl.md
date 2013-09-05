@@ -27,11 +27,11 @@ First, construct an integration test that contains the following:
 
     <@snippet path="src/test/java/com/yummynoodlebar/config/CoreDomainIntegrationTest.java" prefix="complete"/>
 
-This integration test constructs an `ApplicationContext` using JavaConfig as specified on the `@ContextConfiguration` annotation. The Core domain's configuration will be created using Spring JavaConfig in a class called `CoreConfig`, the persistence domain's configuration will be created in a class call `PersistenceConfig`.
+This integration test constructs an `ApplicationContext` using JavaConfig as specified on the `@ContextConfiguration` annotation. The Core domain's configuration will be created using Spring JavaConfig in a class called `CoreConfig`. The persistence domain's configuration will be created in a class call `PersistenceConfig`.
 
 With the `ApplicationContext` constructed, the test can have its `MenuService` and `OrderService` test entry points autowired, ready for the test methods.
 
-Finally you have two test methods that asserts that the `menuService` and `orderService` dependencies has been provided and appear to work correctly.
+Finally you have two test methods that assert that the `menuService` and `orderService` dependencies has been provided and appear to work correctly.
 
 Next, create the Core and Persistence domain configurations.
 
@@ -79,7 +79,7 @@ The test validates the `WebConfig` by mocking requests which exercise the handle
 
 ## Initialize your Web service web infrastructure
 
-As of Spring 3.2, if you're using a web container that supports the Servlet 3 specification such as Tomcat 7+, it's possible to initialize the underlying web infrastructure for your application without writing a line of XML.
+As of Spring 3.2, if you're using a web container that supports the Servlet 3 specification such as Tomcat 7+, it's possible to initialize the underlying web infrastructure for your application without writing a single line of XML.
 
 Here you're going to use the `WebApplicationInitializer` to set up your application's web application context parameters to bootstrap your application's web infrastructure as shown in the following code.
 
@@ -91,17 +91,17 @@ Next you override the `getRootConfigClasses` method which provides a set of Spri
 
     <@snippet "src/main/java/com/yummynoodlebar/config/WebAppInitializer.java" "root" "/complete"/>
 
-Now with a root Application Context being initialise, override `getServletConfigClasses`.  This again returns a list of Spring Configuration classes, in this case, just the ones that are used as Servlet delegates.
+Now with a root Application Context being initialised, override `getServletConfigClasses`.  This again returns a list of Spring Configuration classes, in this case, just the ones that are used as Servlet delegates.
 
     <@snippet "src/main/java/com/yummynoodlebar/config/WebAppInitializer.java" "servletContext" "/complete"/>
 
-Lastly, add some extra configuration to map the servlet URL context and add a standard filter
+Lastly, add some extra configuration to map the servlet URL context and add a standard filter.
 
     <@snippet "src/main/java/com/yummynoodlebar/config/WebAppInitializer.java" "servletConfig" "/complete"/>
 
 `AbstractAnnotationConfigDispatcherServletInitializer` performs setup of the Spring `DispatcherServlet` and `ContextLoader` that are a standard part of Spring web applications.
 
-The `DispatcherServlet` is a 'front controller' servlet that receives all incoming requests that should be considered for the various controllers registered. The DispatcherServlet then is the overall orchestrator of how each incoming request is channelled to the appropriate handler method on the available controllers.
+The `DispatcherServlet` is a 'front controller' servlet that receives all incoming requests that should be considered for the various controllers registered. The DispatcherServlet also orchestrates how each incoming request is channelled to the appropriate handler method on the available controllers.
 
 The full `WebAppInitializer` source code is shown below:
 

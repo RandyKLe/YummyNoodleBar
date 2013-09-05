@@ -4,7 +4,7 @@ You've set up functionality for the Yummy Noodle Bar Web front end and your Life
 
 The problem is, at this point the Yummy Noodle Bar Web site is a little *too* functional; Orders need to be recorded against users, and only the user that placed an Order should be able to view and manage it.
 
-## Step 8: Securing the Web Application
+## Step 6: Securing the Web Application
 
 Once again, all changes here are constrained to the Configuration domain:
 
@@ -69,7 +69,7 @@ Next, Spring Security needs to be inserted into the web context setup.   This co
 
 This configures the Spring Security filter chain and manages inserting it into the web context.
 
-It is important the the Spring Security setup is done before the DispatcherServlet configuration in `WebAppInitializer`.  The `@Order` annotation from Spring Core can be used to manage the order of execution.
+It is important that the Spring Security setup is done before the DispatcherServlet configuration in `WebAppInitializer`.  The `@Order` annotation from Spring Core can be used to manage the order of execution.
 
 The full classes now look like
 
@@ -81,13 +81,13 @@ The full classes now look like
 
 Run the application.
 
-```
-    ./gradlew tomcatRunWar
+```sh
+$ ./gradlew tomcatRunWar
 ```
 
-When you visit (http://localhost:8080/)[http://localhost:8080] you will be able to see the available menu and add items to your basket, as before.  However now, if you click checkout on the basket screen and visit (http://localhost:8080/checkout)[http://localhost:8080/checkout], you will instead be redirected to a login screen and forced to log in before beign able to proceed.
+When you visit [http://localhost:8080/](http://localhost:8080) you will be able to see the available menu and add items to your basket, as before.  However now, if you click checkout on the basket screen and visit [http://localhost:8080/checkout](http://localhost:8080/checkout), you will instead be redirected to a login screen and forced to log in before beign able to proceed.
 
-Enter the user name and password you configured in `SecurityConfig`.  User `letsnosh` and password `noshing`.  You will then be taken to the checkout page, as before.  This time, however, you are logged in.
+Enter the user name and password you configured in `SecurityConfig`: user `letsnosh` and password `noshing`.  You will then be taken to the checkout page, as before.  This time, however, you are logged in.
 
 ## Summary
 

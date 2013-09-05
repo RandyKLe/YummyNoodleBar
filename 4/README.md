@@ -4,13 +4,13 @@ Now that you have [configured and started your application](../2/), which appear
 
 ## Step 4: Creating rich HTML views using JSP and Spring Tags
 
-Your application is now ready to :-
+Your application is now ready to:
 
-* Create a basket for the user to keep the items they want in
-* Add views to generate HTML.
-* Add view templates to keep common HTML in.
+* Create a basket for the user to keep the items they want
+* Add views to generate HTML
+* Add view templates to keep common HTML
 
-You will be working within the Web domain, first created in step 2.
+You will be working within the Web domain, first created in [step 2](../2/).
 
 ## Creating a basket
 
@@ -681,7 +681,7 @@ Try running the application.
     ./gradlew tomcatRunWar
 ```
 
-If you visit (http://localhost:8080/)[http://localhost:8080] you will see the site home url, with the current menu rendered as rather spartan HTML.
+If you visit [http://localhost:8080/](http://localhost:8080) you will see the site home url, with the current menu rendered as rather spartan HTML.
 
 It is not yet good looking, so you have a bit of work to do.  You are going to make a style that will be applied to all the pages and so you will need to share that common HTML and css between them.
 
@@ -762,11 +762,11 @@ public class WebAppInitializer extends
 
 Running the application again (you need to stop and start it to pick up the changes)
 
-```
-    ./gradlew tomcatRunWar
+```sh
+$ ./gradlew tomcatRunWar
 ```
 
-And visiting (http://localhost:8080/)[http://localhost:8080], you will see a much richer HTML page, including the site url, and the basket page.
+And visiting [http://localhost:8080/](http://localhost:8080), you will see a much richer HTML page, including the site url, and the basket page.
 
 ## Summary
 

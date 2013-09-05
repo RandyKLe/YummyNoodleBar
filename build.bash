@@ -8,6 +8,9 @@ find . -type f -name 'README.ftl.md' |sed 's#\(.*\)/.*#\1#' |sort -u
 
 echo "Converting ..."
 
+echo "SIDEBAR.ftl.md -> SIDEBAR.md"
+cat SIDEBAR.ftl.md | fpp > SIDEBAR.md
+
 ORIG=`pwd`
 
 for loc in "${doc_locations[@]}";

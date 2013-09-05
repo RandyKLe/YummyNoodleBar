@@ -1,5 +1,5 @@
 
-## Step 8: Updating the Browser from the Server
+## Step 7: Updating the Browser from the Server
 
 Currently a stretch goal....
 

@@ -5,7 +5,7 @@ In this tutorial you'll learn to use Spring to create production strength Web ap
 
 The web has become a core part of our lives, from shopping to finding the closest ATM. Web applications, server software sending HTML over HTTP, implement the web.
 
-Spring helps you build web applications that scale from a small internal applications to those serving millions of users and thousands of concurrent requests.
+Spring helps you build web applications that scale from a small internal application to those serving millions of users and thousands of concurrent requests.
 
 Whether you are beginning the construction of a web application using Spring, or are just curious on what a Spring backed web application looks like, you've come to the right place.
 
@@ -19,7 +19,7 @@ You will extend Yummy Noodle Bar's existing application by adding an web compone
 
 ## What you'll need
 
-* About an hour.
+* About thirty minutes for each section. You should be able to comfortably work your way through the entire tutorial during your lunch break in a week (or do it all on the weekend!)
 * A copy of the code (available either by [git][u-git] or a [downloadable zip file](https://github.com/spring-guides/tut-web/archive/master.zip)).
 * An IDE of your choice; Spring recommends [Spring Tool Suite](http://www.springsource.org/sts), which is a [free download](http://www.springsource.org/sts).
 
@@ -74,7 +74,7 @@ The current architecture of the application is shown in the following "Life Pres
 
 The Life Preserver diagram is a tool for building applications that following the principles of the [Hexagonal Architecture, sometimes referred to as 'Ports and Adapters' originally characterised by Alistair Cockburn](http://alistair.cockburn.us/Hexagonal+architecture). The Life Preserver diagram shows your application's core internal domains along with the surrounding 'integration' domains that map directly to the packages and components that you'll be working within and upon throughout this tutorial, so it's a great way to understand where things are.
 
-Open the Initial project and you'll see that the life preserver diagram maps to the different packages under src/main/java/com/yummynoodlebar
+Open the **initial** project and you'll see that the life preserver diagram maps to the different packages under src/main/java/com/yummynoodlebar
 
 Under the core application's top-level packages, that is, com.yummynoodlebar.core, here's what the packages contain:
 

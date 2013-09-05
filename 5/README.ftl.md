@@ -7,14 +7,14 @@ Now that you have [added rich views and a basket](../4/), as on your life preser
 
 For Yummy Noodle Bar to accept the orders that a user is making, it needs to know where to send it.   Your users will need to give their name and address.
 
-To do this, you must :-
+To do this, you must:
 
 * Add a checkout URL - "/checkout"
 * Show an HTML form on GET
 * Process the form information on POST
 * Convert the Basket into an Order and send it to the core.
 
-You will continue working within the Web domain, first created in step 2.
+You will continue working within the Web domain, first created in [step 2](../2/).
 
 ### Create the Checkout Controller
 
@@ -42,12 +42,12 @@ TODO Describe setup of a test with a view resolver.
 
 <@snippet "src/test/java/com/yummynoodlebar/web/controller/CheckoutIntegrationTest.java" "init" "complete"/>
 
-Following that are tests that check.
+Following that are tests that check:
 
-* the basket is correctly added to the model
-* the view forward is correct
-* the checkout controller will redirect to the url `/order` if the POST is complete and correct.
-* the checkout controller will forward back to the url `/checkout` if the POST is incomplete.
+* The basket is correctly added to the model.
+* The view forward is correct.
+* The checkout controller will redirect to the url `/order` if the POST is complete and correct.
+* The checkout controller will forward back to the url `/checkout` if the POST is incomplete.
 
 This breaking up of tests follows the Clean Code principles laid out by Rob C. Martin.
 

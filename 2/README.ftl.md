@@ -4,7 +4,7 @@ You've decided on your Web domains URLs and captured them on your Life Preserver
 
 ![Life Preserver Full showing Core Domain and Web Domain](../images/life-preserver-rest-domain-and-core-domain-zoom-out.png)
 
-It's time to implement your Yummy Noodle Bar Web front end. The first step in building a service with Spring MVC is to construct and test one or more controllers that are responsible for handling each incoming HTTP request/ URL that you defined in the previous step.
+It's time to implement your Yummy Noodle Bar Web front end. The first step in building a service with Spring MVC is to construct and test one or more controllers that are responsible for handling each incoming HTTP request as you defined in the previous step.
 
 ## Start with a (failing) test
 
@@ -14,7 +14,7 @@ It's time to implement your Yummy Noodle Bar Web front end. The first step in bu
 
 Before you start creating tests, consider the categories of requests that your service will respond to. You are going to be writing tests that look for all the HTTP interactions that you designed in [Step 1](../1/).
 
-These interactions can be split into X categories:
+These interactions can be split into three categories:
 
 * Requests that read, or query, the Menu
 * Requests that update the basket
@@ -59,9 +59,8 @@ Before you can implement that controller though, create a new test `com.yummynoo
 
 Run the test with 
 
-```
-./gradlew -Dtest.single=SiteIntegrationTest test
-
+```sh
+$ ./gradlew -Dtest.single=SiteIntegrationTest test
 ```
 
 The test will fail, and you will see the error
@@ -96,14 +95,13 @@ As we have described in the test above, you will build a controller that will qu
 
     <@snippet path="src/main/java/com/yummynoodlebar/web/controller/SiteController.java" prefix="/complete"/>
 
-Again, run the test with 
+Again, run the test with:
 
-```
+```sh
 ./gradlew -Dtest.single=SiteIntegrationTest test
-
 ```
 
-The test will now pass, and you will see 
+The test will now pass, and you will see:
 
 ```
 :compileJava
