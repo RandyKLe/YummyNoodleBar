@@ -428,9 +428,13 @@ Now that Thymeleaf is available, create a new file `home.html`
 </html>
 ```
 
+This will end up looking similar to
+
+![Home Page](../images/page_site.png)
+
 This Thymeleaf template reads the model provided by the Controller, namely the `basket` and `menuItems` properties.
 
-Create a view for viewing the current basket too. THis will look like :
+Create a view for viewing the current basket too. This will look like :
 
 `src/main/webapp/WEB-INF/views/showBasket.html`
 ```html
@@ -969,6 +973,10 @@ Now, run the application
 ```
 
 And visit (http://localhost:8080/)[http://localhost:8080]. You will see a rich HTML page, including the site url, and the basket page.
+
+The basket page will now look.
+
+![Basket](../images/page_basket.png)
 
 ## Summary
 
