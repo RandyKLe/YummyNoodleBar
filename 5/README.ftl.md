@@ -137,7 +137,7 @@ Lastly, create the view for the order and its status.
 
 !!!IMPORT path="src/main/webapp/WEB-INF/views/order.html" prefix="complete"/>
 
-I should look like
+It should look like
 
 ![Checkout](../images/page_basket.png)
 
