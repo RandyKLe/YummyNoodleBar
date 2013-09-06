@@ -105,5 +105,4 @@ Given the integration between your application and the outside world, consider t
 * [Step 4: Creating rich HTML views using Thymeleaf](4/)
 * [Step 5: Accepting user submitted data](5/)
 * [Step 6: Securing the Web Application](6/)
-* [Step 7: Updating the Browser from the Server](7/)
 * [Recap and What's Next?](8/)

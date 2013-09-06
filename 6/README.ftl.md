@@ -95,6 +95,6 @@ You have secured your application using Spring Security, and Yummy Noodle Bar is
 
 See the current state of your application below LP
 
-Next, you will use some of the more advanced features of the web to push data from the Server to the browser to create a lower latency, more highly scalable website.
+Well done!  You have completed the adding of a Web front end to the Yummy Noodle Bar.
 
-[Next.. Accepting user submitted data](../7/)
+[Next.. Summary and Recap](../7/)
