@@ -19,7 +19,12 @@ with open(sys.argv[1]) as input:
             print "```%s" % path.split(".")[-1]
             with open(prefix + "/" + path) as code:
                 for line in code.readlines():
-                    print line.rstrip()
+                    if "{!begin" in line:
+                        pass
+                    elif "{!end" in line:
+                        pass
+                    else:
+                        print line.rstrip()
             print "```"
         else:
             print line.rstrip()

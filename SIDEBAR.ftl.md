@@ -22,6 +22,8 @@
 
 * [REST][u-rest]
 * [JSON][u-json]
+* [View templates][u-view-templates]
 
 <@u_rest/>
 <@u_json/>
+<@u_view_templates/>

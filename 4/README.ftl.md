@@ -44,7 +44,7 @@ The section
     
 Specifies that a new instance of the bean will be created for every user session (`HttpSession`), and that this will be managed by an automatically generated proxy.
 
-The result of this is that you may inject the `Basket` as a dependency use `@Autowired` and can use normally, calls will be routed to the correct instance based on the current session by the automatically generated proxy.
+The result of this is that you may inject the `Basket` as a dependency using `@Autowired` and can use normally. Calls will be routed to the correct instance based on the current session by the automatically generated proxy.
 
 Next, you need to update the SiteController to take advantage of the new `Basket`
 Update `SiteController` to read 
@@ -56,7 +56,7 @@ Firstly, the injection of the Basket dependency.  As above, only a single SiteCo
 
     <@snippet "src/main/java/com/yummynoodlebar/web/controller/SiteController.java" "inject" "/complete"/>
 
-The implementation of the request has been altered.  Instead of showing text on the users browser, a `Model` instance is obtained from Spring MVC and populated with all the current MenuItems.    The method then returns a string "/home".  This is a reference to a *view*, which you will create next.
+The implementation of the request has been altered.  Instead of showing text in the user's browser, a `Model` instance is obtained from Spring MVC and populated with all the current MenuItems.    The method then returns a string "/home".  This is a reference to a *view*, which you will create next.
 
     <@snippet "src/main/java/com/yummynoodlebar/web/controller/SiteController.java" "method" "/complete"/>
 
