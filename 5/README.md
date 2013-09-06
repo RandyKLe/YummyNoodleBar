@@ -20,7 +20,7 @@ You will continue working within the Web domain, first created in [step 2](../2/
 
 The Basket you created in the last section will contain all the items that a user wants to order.  When they want to place their Order, you need to also collect sufficient information from the customer to deliver their Order.
 
-To do this you will create a new Controller, and have that Controller accept a Command Object.  
+To do this you will create a new Controller, and have that Controller accept a Command Object.
 
 A command Object is a bean that is used to model an HTTP request.  It does this by automatically mapping request parameters onto the properties of the bean.   These properties can then be tested using *Validation*.
 
@@ -100,12 +100,12 @@ public class CheckoutIntegrationTest {
 
 	@Before
 	public void setup() {
-		
-		
+
+
 		MockitoAnnotations.initMocks(this);
-		
+
 		controller.setBasket(new Basket());
-		
+
 		mockMvc = standaloneSetup(controller).setViewResolvers(viewResolver())
 				.build();
 	}
@@ -148,7 +148,7 @@ public class CheckoutIntegrationTest {
 		UUID id = UUID.randomUUID();
 
 		when(orderService.createOrder(any(CreateOrderEvent.class))).thenReturn(newOrder(id));
-		
+
 		mockMvc.perform(post("/checkout")
 				.param("name", CUSTOMER_NAME)
 				.param("address1", ADDRESS1)
@@ -171,7 +171,7 @@ public class CheckoutIntegrationTest {
 	        )));
 	//@formatter:on
 	}
-	
+
 	@Test
 	public void thatBasketIsEmptyOnSuccess() throws Exception {
 		UUID id = UUID.randomUUID();
@@ -179,7 +179,7 @@ public class CheckoutIntegrationTest {
 		when(orderService.createOrder(any(CreateOrderEvent.class))).thenReturn(newOrder(id));
 
 		controller.getBasket().add(standardWebMenuItem());
-		
+
 		mockMvc.perform(
 				post("/checkout").param("name", CUSTOMER_NAME)
 								 .param("address1", ADDRESS1)
@@ -206,12 +206,12 @@ TODO Describe setup of a test with a view resolver.
 ```java
 	@Before
 	public void setup() {
-		
-		
+
+
 		MockitoAnnotations.initMocks(this);
-		
+
 		controller.setBasket(new Basket());
-		
+
 		mockMvc = standaloneSetup(controller).setViewResolvers(viewResolver())
 				.build();
 	}
@@ -245,7 +245,7 @@ You could parse these variables yourself and check their contents according to w
 
 The Command Object is a class that Spring will map the POST variables onto, parsing them into the given types on the class.  For example, if you have an `int` property on the Command Object, Spring will take the textual value supplied in the request and attempt to parse an `int` out of it.   This process of automatic parsing and conversion is known as *Binding*, and you can find out more in the [reference documentation](https://docs.springframework.io/spring/docs/3.2.4.RELEASE/spring-framework-reference/html/)
 
-Command Objects are also the ideal place for validation.  
+Command Objects are also the ideal place for validation.
 
 Create a new entity class, `CustomerInfo`, like so.
 
@@ -396,13 +396,13 @@ public class CheckoutController {
 }
 ```
 
-The controller provides two implementations for the same URL `/checkout`. 
+The controller provides two implementations for the same URL `/checkout`.
 
 If you access the URL with a HTTP GET, you will provided with the /checkout view (which will be resolved to the checkout.html).
 
 If you access the URL with a HTTP POST, then the Controller expects that a form has been submitted.  To process this form, it uses the Command Object `customerInfo`, of type `CustomerInfo`.
 
-You will notice the `@ModelAttribute` annotation on the `customerInfo` parameter, and a matching method below 
+You will notice the `@ModelAttribute` annotation on the `customerInfo` parameter, and a matching method below
 
 `src/main/java/com/yummynoodlebar/web/controller/CheckoutController.java`
 ```java
@@ -426,7 +426,92 @@ Now that the checkout URL is available and tested, its time to add the View to s
 
 This view needs to populate the CustomerInfo bean
 
-!!!IMPORT path="src/main/webapp/WEB-INF/views/checkout.html" prefix="complete"
+`src/main/webapp/WEB-INF/views/checkout.html`
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="description" content=""/>
+    <meta name="author" content="Simplicity Itself"/>
+
+    <title>Yummy Noodle Bar</title>
+
+    <link href="/resources/css/bootstrap.min.css" rel="stylesheet">
+    </link>
+    <style type="text/css">
+        body {
+            padding-top: 60px;
+            padding-bottom: 40px;
+        }
+
+        .sidebar-nav {
+            padding: 9px 0;
+        }
+    </style>
+    <!-- See http://twitter.github.com/bootstrap/scaffolding.html#responsive -->
+    <link href="/resources/css/bootstrap-responsive.min.css" rel="stylesheet">
+    </link>
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+</head>
+<body>
+
+<div th:include="layout :: head"></div>
+<div class="container-fluid">
+    <div th:include="layout :: left"></div>
+    <div class="hero-unit span9">
+		<h3>Where do we deliver your Order?</h3>
+		<p>
+			<a class="btn btn-primary btn-large" href="/showBasket">Back to basket</a>
+		</p>
+
+	</div>
+
+	<div class="row-fluid">
+		<div class="span8 sidebar-nav">
+
+            <div th:if="${message}"
+                 th:text="${message}"
+                 id="message" class="alert alert-info">
+            </div>
+
+            <form method="POST" th:object="${customerInfo}">
+                <table>
+                    <tr>
+                        <td>Name:</td>
+                        <td><input type="text" th:field="*{name}" /></td>
+                        <td th:if="${#fields.hasErrors('name')}"><p th:errors="*{name}">Incorrect Name</p></td>
+                    </tr>
+
+                    <tr>
+                        <td>Address:</td>
+                        <td><input type="text" th:field="*{address1}" /></td>
+                        <td th:if="${#fields.hasErrors('address1')}"><p th:errors="*{address1}">Incorrect Address</p></td>
+                    </tr>
+                    <tr>
+                        <td>Postal Code:</td>
+                        <td><input type="text" th:field="*{postcode}" /></td>
+                        <td th:if="${#fields.hasErrors('postcode')}"><p th:errors="*{postcode}">Postcode Error</p></td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <input type="submit" value="Place order" />
+                        </td>
+                    </tr>
+                </table>
+            </form>
+            <div th:include="layout :: foot"></div>
+		</div>
+	</div>
+</div>
+</body>
+</html>
+```
 
 You are aiming for a view that looks like this
 
@@ -478,7 +563,7 @@ import com.yummynoodlebar.web.controller.fixture.WebDataFixture;
 public class OrderStatusIntegrationTest {
 
 	private static final String ORDER_VIEW = "/WEB-INF/views/order.html";
-	
+
 	private static UUID uuid;
 
 	MockMvc mockMvc;
@@ -507,31 +592,31 @@ public class OrderStatusIntegrationTest {
 
 	@Test
 	public void thatOrderViewIsForwardedTo() throws Exception {
-		
+
 		when(orderService.requestOrderDetails(any(RequestOrderDetailsEvent.class))).thenReturn(orderDetailsEvent(uuid));
 		when(orderService.requestOrderStatus(any(RequestOrderStatusEvent.class))).thenReturn(orderStatusEvent(uuid));
-		
+
 		mockMvc.perform(get("/order/" + uuid))
 		.andExpect(status().isOk())
 		.andExpect(forwardedUrl(ORDER_VIEW));
 	}
-	
+
 	@Test
 	public void thatOrderStatusIsPutInModel() throws Exception {
-		
+
 		when(orderService.requestOrderDetails(any(RequestOrderDetailsEvent.class))).thenReturn(orderDetailsEvent(uuid));
 		when(orderService.requestOrderStatus(any(RequestOrderStatusEvent.class))).thenReturn(orderStatusEvent(uuid));
-		
+
 		mockMvc.perform(get("/order/" + uuid))
 			.andExpect(model().attributeExists("orderStatus"))
 			.andExpect(model().attribute("orderStatus", hasProperty("name", equalTo(WebDataFixture.CUSTOMER_NAME))))
 			.andExpect(model().attribute("orderStatus", hasProperty("status", equalTo(WebDataFixture.STATUS_RECEIVED))));
-		
+
 		verify(orderService).requestOrderDetails(Matchers.<RequestOrderDetailsEvent>argThat(
 				org.hamcrest.Matchers.<RequestOrderDetailsEvent>hasProperty("key", equalTo(uuid))));
 		verify(orderService).requestOrderStatus(any(RequestOrderStatusEvent.class));
 	}
-		
+
 }
 ```
 
@@ -594,7 +679,72 @@ public class OrderStatusController {
 
 Lastly, create the view for the order and its status.
 
-!!!IMPORT path="src/main/webapp/WEB-INF/views/order.html" prefix="complete"/>
+`src/main/webapp/WEB-INF/views/order.html`
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="description" content=""/>
+    <meta name="author" content="Simplicity Itself"/>
+
+    <title>Yummy Noodle Bar</title>
+
+    <link href="/resources/css/bootstrap.min.css" rel="stylesheet">
+    </link>
+    <style type="text/css">
+        body {
+            padding-top: 60px;
+            padding-bottom: 40px;
+        }
+
+        .sidebar-nav {
+            padding: 9px 0;
+        }
+    </style>
+    <!-- See http://twitter.github.com/bootstrap/scaffolding.html#responsive -->
+    <link href="/resources/css/bootstrap-responsive.min.css" rel="stylesheet">
+    </link>
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+</head>
+<body>
+
+<div th:include="layout :: head"></div>
+<div class="container-fluid">
+    <div class="hero-unit">
+        <h3>Your order is confirmed</h3>
+
+        <p>
+            <a class="btn btn-primary btn-large" href="/">Please can I have some more</a>
+            <a class="btn btn-primary btn-large"
+               th:href="'/order/' + ${orderStatus.orderId}">Get latest status</a>
+        </p>
+
+    </div>
+
+    <div class="row-fluid sidebar-nav">
+        <div class="span8">
+            <p class="text-info"><span th:text="${orderStatus.name}">, </span>Thanks for your order</p>
+
+            <p class="text-info">Your order number is <span th:text="${orderStatus.orderId}"></span></p>
+
+            <p class="text-info">The estimate for cooking is 20 minutes</p>
+
+            <p class="text-success">The status is currently <span th:text="${orderStatus.status}"></span></p>
+
+        </div>
+    </div>
+    <div th:include="layout :: foot"></div>
+</div>
+
+</body>
+</html>
+```
 
 It should look like
 
