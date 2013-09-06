@@ -63,7 +63,7 @@ For the Yummy Noodle Bar, Users need to:
 
 ### Design your URLs
 
-The following URLs will give that functionality in a way that the user can easily use and return to :-
+The following URLs will give that functionality in a way that the user can easily use and return to:
 
 <table>
 <thead>

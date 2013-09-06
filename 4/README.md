@@ -4,7 +4,7 @@ Now that you have [configured and started your application](../2/), which appear
 
 ## Step 4: Creating rich HTML views using Thymeleaf
 
-Your application is now ready to :-
+Your application is now ready to:
 
 * Create a basket for the user to keep the items they want in
 * Add views to generate HTML.
