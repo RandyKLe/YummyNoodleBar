@@ -106,7 +106,7 @@ This separation allows an application to be built in a more scalable and testabl
 
 * **Model** - The Model is provided to the view, and contains all the information it needs to render itself to show to the user.  This is represented in Spring MVC by the `Model` class.  Sometimes this class is not visible, and is generated from other information returned by the Controller method.
 
-* **View** - The View is responsible for presenting information to the user, in the web, the View components will generate HTML and may contain JavaScript.  Views in Spring MVC can take many forms, however in this tutorial, all views will be Java Server Pages (JSP)
+* **View** - The View is responsible for presenting information to the user, in the web, the View components will generate HTML and may contain JavaScript.  Views in Spring MVC can take many forms, however in this tutorial, all views will be coded using Thymeleaf.
 
 ### Summary
 

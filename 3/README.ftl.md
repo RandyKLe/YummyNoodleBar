@@ -157,4 +157,4 @@ Your full Life Preserver should now look like the following:
 
 Your web front end isn't very pretty yet, or even functional.  You will add both a pretty face and expand the number of URLs your application responds to, in the next section of this tutorial
 
-[Next.. Creating rich HTML views using JSP and Spring Tags](../4/)
+[Next.. Creating rich HTML views using Thymeleaf](../4/)
