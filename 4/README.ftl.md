@@ -153,7 +153,7 @@ Now, run the application
 
 And visit (http://localhost:8080/)[http://localhost:8080]. You will see a rich HTML page, including the site url, and the basket page.
 
-The basket page will now look.
+Once you add a couple of items to the basket, it will look similar to :
 
 ![Basket](../images/page_basket.png)
 

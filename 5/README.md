@@ -513,6 +513,12 @@ This view needs to populate the CustomerInfo bean
 </html>
 ```
 
+You are aiming for a view that looks like this
+
+![Checkout](../images/page_checkout.png)
+
+> If you open the checkout html view using a browser, you will get most of the page rendered, minus the templates brought in by Thymeleaf
+
 ### Show the Order Status
 
 Once the user has successfully checked out and placed their Order, you need to show them a screen that displays the Order they have placed and the current status of it.   This allows the kitchen to update the status of the Order and the user to see that new status.
@@ -739,6 +745,10 @@ Lastly, create the view for the order and its status.
 </body>
 </html>
 ```
+
+I should look like
+
+![Checkout](../images/page_basket.png)
 
 ## Summary
 
