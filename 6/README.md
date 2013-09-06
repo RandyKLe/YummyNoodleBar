@@ -11,11 +11,11 @@ Once again, all changes here are constrained to the Configuration domain:
 ![Life Preserver showing Configuration Domain with Initial Components](../images/life-preserver-initial-config-domain-focus.png)
 
 
-### Authentication in Web
+### Authentication on the Web
 
 To limit access to the Yummy Noodle Bar Web font end, you extend the initial web design as follows:
 
-* URLs that need to have a user will be protected, and if no user authentication is present, will issue a 302 to the login form.
+* URLs that need to have a known user will be protected, and if no user authentication is present, will issue a 302 to the login form.
 * A security token will be placed in the HTTP Session in the web container.
 * The session will be loaded on every request against the JSESSIONID cookie that is placed in the users browser by a response cookie.
 
@@ -54,7 +54,9 @@ You can now add a new concern to your application: security configuration. Creat
 ```java
 package com.yummynoodlebar.config;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -81,6 +83,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .and()
         //This will generate a login form if none is supplied.
         .formLogin();
+  }
+
+  @Bean
+  @Override
+  public AuthenticationManager authenticationManagerBean() throws Exception {
+       return super.authenticationManagerBean();
   }
 }
 ```
@@ -159,12 +167,11 @@ public class SecurityWebAppInitializer
 ```java
 package com.yummynoodlebar.config;
 
-import com.opensymphony.sitemesh.webapp.SiteMeshFilter;
+import javax.servlet.Filter;
+
 import org.springframework.core.annotation.Order;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
-
-import javax.servlet.Filter;
 
 @Order(2)
 public class WebAppInitializer extends
@@ -185,14 +192,14 @@ public class WebAppInitializer extends
 		return new String[] { "/" };
 	}
 
-
 	@Override
 	protected Filter[] getServletFilters() {
 
 		CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
 		characterEncodingFilter.setEncoding("UTF-8");
-		return new Filter[] { characterEncodingFilter, new SiteMeshFilter()};
+		return new Filter[] { characterEncodingFilter};
 	}
+
 }
 ```
 

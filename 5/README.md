@@ -88,7 +88,7 @@ public class CheckoutIntegrationTest {
 
 	private static final String CUSTOMER_NAME = "Customer Name";
 
-	private static final String CHECKOUT_VIEW = "/WEB-INF/views/checkout.jsp";
+	private static final String CHECKOUT_VIEW = "/WEB-INF/views/checkout.html";
 
 	MockMvc mockMvc;
 
@@ -113,7 +113,7 @@ public class CheckoutIntegrationTest {
 	private InternalResourceViewResolver viewResolver() {
 		InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
 		viewResolver.setPrefix("/WEB-INF/views");
-		viewResolver.setSuffix(".jsp");
+		viewResolver.setSuffix(".html");
 		return viewResolver;
 	}
 
@@ -219,7 +219,7 @@ TODO Describe setup of a test with a view resolver.
 	private InternalResourceViewResolver viewResolver() {
 		InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
 		viewResolver.setPrefix("/WEB-INF/views");
-		viewResolver.setSuffix(".jsp");
+		viewResolver.setSuffix(".html");
 		return viewResolver;
 	}
 ```
@@ -556,7 +556,7 @@ import com.yummynoodlebar.web.controller.fixture.WebDataFixture;
 
 public class OrderStatusIntegrationTest {
 
-	private static final String ORDER_VIEW = "/WEB-INF/views/order.jsp";
+	private static final String ORDER_VIEW = "/WEB-INF/views/order.html";
 
 	private static UUID uuid;
 
@@ -580,7 +580,7 @@ public class OrderStatusIntegrationTest {
 	private InternalResourceViewResolver viewResolver() {
 		InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
 		viewResolver.setPrefix("/WEB-INF/views");
-		viewResolver.setSuffix(".jsp");
+		viewResolver.setSuffix(".html");
 		return viewResolver;
 	}
 

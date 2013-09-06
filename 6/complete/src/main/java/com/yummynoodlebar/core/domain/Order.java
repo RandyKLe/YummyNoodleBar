@@ -98,7 +98,7 @@ public class Order {
   }
 
   public static Order fromOrderDetails(OrderDetails orderDetails) {
-    Order order = new Order(orderDetails.getDateTimeOfSubmission());
+    Order order = new Order(orderDetails.getKey(),orderDetails.getDateTimeOfSubmission());
 
     BeanUtils.copyProperties(orderDetails, order);
 

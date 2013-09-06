@@ -92,12 +92,13 @@ public class OrderPersistenceEventHandler implements OrderPersistenceService {
 
   @Override
   public OrderStatusEvent requestOrderStatus(RequestOrderStatusEvent requestOrderDetailsEvent) {
-    Order order = orderRepository.findById(requestOrderDetailsEvent.getKey());
+    
+    OrderStatus orderStatus = orderStatusRepository.findLatestById(requestOrderDetailsEvent.getKey());
 
-    if (order == null) {
+    if (orderStatus == null) {
       return OrderStatusEvent.notFound(requestOrderDetailsEvent.getKey());
     }
 
-    return new OrderStatusEvent(requestOrderDetailsEvent.getKey(), order.getStatus().toStatusDetails());
+    return new OrderStatusEvent(requestOrderDetailsEvent.getKey(), orderStatus.toStatusDetails());
   }
 }

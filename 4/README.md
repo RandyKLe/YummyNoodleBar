@@ -62,7 +62,7 @@ public class SiteIntegrationTest {
 	private static final String STANDARD = "Yummy Noodles";
 	private static final String CHEF_SPECIAL = "Special Yummy Noodles";
 	private static final String LOW_CAL = "Low cal Yummy Noodles";
-	private static final String FORWARDED_URL = "/WEB-INF/views/home.jsp";
+	private static final String FORWARDED_URL = "/WEB-INF/views/home.html";
 	private static final String VIEW = "/home";
 
 
@@ -92,7 +92,7 @@ public class SiteIntegrationTest {
 	private InternalResourceViewResolver viewResolver() {
 		InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
 		viewResolver.setPrefix("/WEB-INF/views");
-		viewResolver.setSuffix(".jsp");
+		viewResolver.setSuffix(".html");
 		return viewResolver;
 	}
 
@@ -556,7 +556,7 @@ import com.yummynoodlebar.web.domain.Basket;
 public class BasketQueryIntegrationTest {
 
 	private static final String VIEW_NAME = "/showBasket";
-	private static final String FORWARDED_URL = "/WEB-INF/views/showBasket.jsp";
+	private static final String FORWARDED_URL = "/WEB-INF/views/showBasket.html";
 
 	MockMvc mockMvc;
 
@@ -578,7 +578,7 @@ public class BasketQueryIntegrationTest {
 	private InternalResourceViewResolver viewResolver() {
 		InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
 		viewResolver.setPrefix("/WEB-INF/views");
-		viewResolver.setSuffix(".jsp");
+		viewResolver.setSuffix(".html");
 		return viewResolver;
 	}
 
@@ -648,7 +648,7 @@ public class BasketCommandIntegrationTest {
 	private InternalResourceViewResolver viewResolver() {
 		InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
 		viewResolver.setPrefix("/WEB-INF/views");
-		viewResolver.setSuffix(".jsp");
+		viewResolver.setSuffix(".html");
 		return viewResolver;
 	}
 
@@ -948,7 +948,7 @@ Create a new html file
             <li class="nav-header">Navigation could go here</li>
             <li><a href="http://www.gopivotal.com/">Pivotal, Inc</a></li>
             <li><a href="http://www.springsource.org/spring-xd">Spring XD</a></li>
-            <li><a href="http://www.simplicityitself.com/">Simples</a></li>
+            <li><a href="http://www.simplicityitself.com/">Simplicity</a></li>
         </ul>
     </div>
 </div>

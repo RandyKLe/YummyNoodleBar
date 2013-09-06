@@ -25,7 +25,7 @@ public class SiteIntegrationTest {
 	private static final String STANDARD = "Yummy Noodles";
 	private static final String CHEF_SPECIAL = "Special Yummy Noodles";
 	private static final String LOW_CAL = "Low cal Yummy Noodles";
-	private static final String FORWARDED_URL = "/WEB-INF/views/home.jsp";
+	private static final String FORWARDED_URL = "/WEB-INF/views/home.html";
 	private static final String VIEW = "/home";
 	
 	
@@ -55,7 +55,7 @@ public class SiteIntegrationTest {
 	private InternalResourceViewResolver viewResolver() {
 		InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
 		viewResolver.setPrefix("/WEB-INF/views");
-		viewResolver.setSuffix(".jsp");
+		viewResolver.setSuffix(".html");
 		return viewResolver;
 	}
 	

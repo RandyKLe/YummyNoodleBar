@@ -14,8 +14,9 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
-import org.springframework.web.servlet.view.InternalResourceViewResolver;
-import org.springframework.web.servlet.view.JstlView;
+import org.thymeleaf.spring3.SpringTemplateEngine;
+import org.thymeleaf.spring3.view.ThymeleafViewResolver;
+import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 @Configuration
 @EnableWebMvc
@@ -42,14 +43,33 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 		cookieLocaleResolver.setDefaultLocale(StringUtils.parseLocaleString("en"));
 		return cookieLocaleResolver;
 	}
-	
+
+  @Bean
+  public ServletContextTemplateResolver templateResolver() {
+    ServletContextTemplateResolver resolver = new ServletContextTemplateResolver();
+    resolver.setPrefix("/WEB-INF/views/");
+    resolver.setSuffix(".html");
+    //NB, selecting HTML5 as the template mode.
+    resolver.setTemplateMode("HTML5");
+    resolver.setCacheable(false);
+    return resolver;
+
+  }
+
+  public SpringTemplateEngine templateEngine() {
+    SpringTemplateEngine engine = new SpringTemplateEngine();
+    engine.setTemplateResolver(templateResolver());
+    return engine;
+  }
+
 	@Bean
 	public ViewResolver viewResolver() {
 
-		InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
-		viewResolver.setViewClass(JstlView.class);
-		viewResolver.setPrefix("/WEB-INF/views");
-		viewResolver.setSuffix(".jsp");
+    ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();
+		viewResolver.setTemplateEngine(templateEngine());
+    viewResolver.setOrder(1);
+    viewResolver.setViewNames(new String[]{"*"});
+    viewResolver.setCache(false);
 		return viewResolver;
 	}
 	

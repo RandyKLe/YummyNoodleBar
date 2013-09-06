@@ -16,6 +16,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.util.Arrays;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration(classes = { PersistenceConfig.class, CoreConfig.class,
@@ -25,8 +27,7 @@ public class WebDomainIntegrationTest {
 	private static final String STANDARD = "Yummy Noodles";
 	private static final String CHEF_SPECIAL = "Special Yummy Noodles";
 	private static final String LOW_CAL = "Low cal Yummy Noodles";
-	public static final String FORWARDED_URL = "/WEB-INF/views/home.jsp";
-	
+
 	private MockMvc mockMvc;
 	
 	@Autowired
@@ -50,7 +51,8 @@ public class WebDomainIntegrationTest {
 															hasProperty("name", is(CHEF_SPECIAL)),
 															hasProperty("name", is(LOW_CAL))) ))
 		.andExpect(model().attributeExists("basket"))
-		.andExpect(forwardedUrl(FORWARDED_URL));
+    .andExpect(content().string(stringContainsInOrder(
+            Arrays.asList("<title>Yummy Noodle Bar</title>"))));
 
 	}
 

@@ -11,11 +11,11 @@ Once again, all changes here are constrained to the Configuration domain:
 ![Life Preserver showing Configuration Domain with Initial Components](../images/life-preserver-initial-config-domain-focus.png)
 
 
-### Authentication in Web
+### Authentication on the Web
 
 To limit access to the Yummy Noodle Bar Web font end, you extend the initial web design as follows:
 
-* URLs that need to have a user will be protected, and if no user authentication is present, will issue a 302 to the login form.
+* URLs that need to have a known user will be protected, and if no user authentication is present, will issue a 302 to the login form.
 * A security token will be placed in the HTTP Session in the web container.
 * The session will be loaded on every request against the JSESSIONID cookie that is placed in the users browser by a response cookie.
 
