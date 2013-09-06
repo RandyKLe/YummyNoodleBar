@@ -16,7 +16,7 @@ with open(sys.argv[1]) as input:
             path = match.group(1)
             prefix = match.group(2)
             print "`%s`" % path
-            print "```jsp"
+            print "```%s" % path.split(".")[-1]
             with open(prefix + "/" + path) as code:
                 for line in code.readlines():
                     print line.rstrip()

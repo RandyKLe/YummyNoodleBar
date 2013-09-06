@@ -427,7 +427,7 @@ Now that the checkout URL is available and tested, its time to add the View to s
 This view needs to populate the CustomerInfo bean
 
 `src/main/webapp/WEB-INF/views/checkout.html`
-```jsp
+```html
 <!DOCTYPE html>
 <html>
 <head>
@@ -674,7 +674,7 @@ public class OrderStatusController {
 Lastly, create the view for the order and its status.
 
 `src/main/webapp/WEB-INF/views/order.html`
-```jsp
+```html
 <!DOCTYPE html>
 <html>
 <head>

@@ -319,7 +319,7 @@ Before you can use it, you need to add it to your `build.gradle`
 Now that Thymeleaf is available, create a new file `home.html`
 
 `src/main/webapp/WEB-INF/views/home.html`
-```jsp
+```html
 <!DOCTYPE html>
 <html>
 <head>
@@ -435,7 +435,7 @@ This Thymeleaf template reads the model provided by the Controller, namely the `
 Create a view for viewing the current basket too. THis will look like :
 
 `src/main/webapp/WEB-INF/views/showBasket.html`
-```jsp
+```html
 <!DOCTYPE html>
 <html>
 <head>
@@ -910,7 +910,7 @@ The above template references another called `layout.html`, and a fragment named
 Create a new html file
 
 `src/main/webapp/WEB-INF/views/layout.html`
-```jsp
+```html
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
