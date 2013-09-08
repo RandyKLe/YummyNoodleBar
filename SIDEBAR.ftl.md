@@ -21,7 +21,7 @@
 ### Tutorials
 
 * [Designing and Implementing RESTful Web Services with Spring][tut-rest]
-* [Persisting Data with Spring][tut-data]
+* [Data Access with Spring][tut-data]
 
 [tut-rest]: /guides/tutorials/rest
 [tut-data]: /guides/tutorials/data
