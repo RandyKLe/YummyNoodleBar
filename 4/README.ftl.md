@@ -99,8 +99,6 @@ Create a view for viewing the current basket too. This will look like :
 
 Viewing a menu in HTML and seeing the state of the basket is good, however for it to be useful, you need to add the ability to add and remove items from the basket.  For good measure, you will also add support to view the current basket.
 
-//TODO, talk about cqrs.
-
 Create two empty classes `com.yummynoodlebar.web.controller.BasketQueryController` and `com.yummynoodlebar.web.controller.BasketCommandController`.
 
 Create a test for each.
@@ -116,8 +114,6 @@ Next, you need to implement the controllers themselves.
     <@snippet path="src/main/java/com/yummynoodlebar/web/controller/BasketQueryController.java" prefix="complete"/>
 
     <@snippet path="src/main/java/com/yummynoodlebar/web/controller/BasketCommandController.java" prefix="complete"/>
-
-TODO, discuss implementation a little. nothing special about these particularly. mention use of post variables maybe.
 
 ## Update the Configuration
 
@@ -141,11 +137,11 @@ While developing with Thymeleaf, it is generally recommended that any page you m
     
 The above template references another called `layout.html`, and a fragment named `head` inside that.  Two others are also referenced in the `home` above, `left` and `footer`.  
 
-Create a new html file
+Create a new html file:
 
 !!!IMPORT path="src/main/webapp/WEB-INF/views/layout.html" prefix="complete"
 
-Now, run the application
+Now, run the application:
 
 ```
     ./gradlew tomcatRunWar
@@ -153,7 +149,7 @@ Now, run the application
 
 And visit (http://localhost:8080/)[http://localhost:8080]. You will see a rich HTML page, including the site url, and the basket page.
 
-Once you add a couple of items to the basket, it will look similar to :
+Once you add a couple of items to the basket, it will look similar to:
 
 ![Basket](../images/page_basket.png)
 
@@ -161,7 +157,9 @@ Once you add a couple of items to the basket, it will look similar to :
 
 You have extended the application to show the menu in HTML and allow a user to select the items they are interested in and put them into a session backed Basket object, that is only present in the Web Domain.
 
-See the current state of your application below LP
+See the current state of your application in the following Life Preserver:
+
+![Life Preserver showing Web Domain with initial Components](../images/life-preserver-8.png)
 
 Next, you will extend the application to allow creating an Order from the Basket, which will require you to accept and validate customer information.
 
