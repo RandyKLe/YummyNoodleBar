@@ -86,7 +86,7 @@ Take a moment to familiarize yourself with the components in each package. The t
 
 ## Web domain
 
-A web front end integrates your application with web browsers and their users. As such, the web front end lives in its own integration domain on the periphery of your application's core, as show in the following update to you life preserver.
+A web front end integrates your application with web browsers and their users. As such, the web front end lives in its own integration domain on the periphery of your application's core, as show in the following update to your life preserver.
 
 ![Life Preserver showing Web Domain](images/life-preserver-2.png)
 
