@@ -24,9 +24,6 @@ Open the `initial` project. Under src/main/java/com/yummynoodlebar/core/domain, 
 
 This tutorial focuses on the Order domain classes, which can be acted upon by a number of events under the com.yummynoodlebar.events.orders package as shown on the following diagram:
 
-TODO, life presever for Web
-![Life Preserver showing Orders Sub-Domain in Events Domain](../images/life-preserver-event-domain-focus-with-orders.png)
-
 Events in this case decouple out the domain concepts in the core of the Yummy Noodle Bar application from the various integrations that may need to access and work upon the core. 
 
 The event components associated with Orders that you will use for the Web include:
@@ -112,6 +109,6 @@ This separation allows an application to be built in a more scalable and testabl
 
 Congratulations!  You've determined the URLs and links between them that you are going to show to your users and captured those components in the following Life Preserver :
 
-TODO, show the Web initial web domain as a LF.
+![Life Preserver showing initial Web Domain](images/life-preserver-3.png)
 
 [Next… Implementing URLs and returning data](../2/)
