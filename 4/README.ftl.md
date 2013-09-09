@@ -1,6 +1,6 @@
 Now that you have [configured and started your application](../2/), which appears in the new Configuration Domain on your life preserver, its time to make the application usable by adding a basket for users to add menu items, and also a view layer to show HTML.
 
-![Life Preserver Full showing Core Domain, Configuration and Web Domains](TODO)
+![Life Preserver showing Configuration Domain with Initial Components](../images/life-preserver-7.png)
 
 ## Step 4: Creating rich HTML views using Thymeleaf
 

@@ -1,6 +1,6 @@
 Now that you have [written and tested a web controller](../2/), proudly added to your Life Preserver as shown below, it's time to bring the whole application together.
 
-![Life Preserver Full showing Core Domain and Web Domain](../images/life-preserver-rest-domain-and-controllers-and-core-domain-zoom-out.png)
+![Life Preserver showing Web Controller](../images/life-preserver-4.png)
  
 ## Step 3: Configuring a basic application
 
@@ -13,7 +13,7 @@ At this point you are ready to:
 
 To complete these tasks, you'll need a new domain, the Configuration domain.
 
-![Life Preserver showing Configuration Domain](../images/life-preserver-empty-config-domain-focus.png)
+![Life Preserver showing Web Controller](../images/life-preserver-5.png)
 
 ## Create a configuration for your application's Core and Persistence domains using Spring JavaConfig
 
@@ -53,7 +53,9 @@ Running the `CoreDomainIntegrationTest` in the `com.yummynoodlebar.config` test 
 
 ## Create a configuration for your Web components
 
-Configuring your new set of controllers is very straightforward as you have used `@Controller` on each of the controller classes. To initialize your Web domain's components, all you need to do is turn on component scanning so that Spring can find and initialize these Spring beans.
+Configuring your new set of controllers is very straightforward as you have used `@Controller` on each of the controller classes. 
+
+To initialize your Web domain's components, all you need to do is turn on component scanning so that Spring can find and initialize these Spring beans.
 
 ### Implement your Web domain configuration
 
@@ -87,7 +89,7 @@ First you create a new piece of configuration as a class inside `com.yummynoodle
 
     <@snippet "src/main/java/com/yummynoodlebar/config/WebAppInitializer.java" "top" "/complete"/>
 
-Next you override the `getRootConfigClasses` method which provides a set of Spring Configuration classes to construct the root application context.  This context will be shared by all elements of the application, including Servlets, Filters and Context Listeners, if present. It will containg the majority of your components, including your Core and Persistence domains.
+Next you override the `getRootConfigClasses` method which provides a set of Spring Configuration classes to construct the root application context.  This context will be shared by all elements of the application, including Servlets, Filters and Context Listeners, if present. It will containing the majority of your components, including your Core and Persistence domains.
 
     <@snippet "src/main/java/com/yummynoodlebar/config/WebAppInitializer.java" "root" "/complete"/>
 
@@ -149,11 +151,11 @@ You've come a long way! You've now got a fully configured Web front end that is 
 
 You've added three new components to your Configuration domain, `CoreConfig`, `PersistenceConfig` and `WebConfig` as shown in the updated life preserver below.
 
-![Life Preserver showing Configuration Domain with Initial Components](../images/life-preserver-initial-config-domain-focus.png)
+![Life Preserver showing Configuration Domain with Initial Components](../images/life-preserver-6.png)
 
 Your full Life Preserver should now look like the following:
 
-![Life Preserver showing Configuration Domain with Initial Components](../images/life-preserver-rest-domain-and-controllers-and-core-domain-and-config-domain-initial-zoom-out.png)
+![Life Preserver showing Configuration Domain with Initial Components](../images/life-preserver-7.png)
 
 Your web front end isn't very pretty yet, or even functional.  You will add both a pretty face and expand the number of URLs your application responds to, in the next section of this tutorial
 
