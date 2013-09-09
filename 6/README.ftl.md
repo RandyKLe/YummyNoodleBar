@@ -85,9 +85,13 @@ Run the application.
 $ ./gradlew tomcatRunWar
 ```
 
-When you visit [http://localhost:8080/](http://localhost:8080) you will be able to see the available menu and add items to your basket, as before.  However now, if you click checkout on the basket screen and visit [http://localhost:8080/checkout](http://localhost:8080/checkout), you will instead be redirected to a login screen and forced to log in before beign able to proceed.
+When you visit [http://localhost:8080/](http://localhost:8080) you will be able to see the available menu and add items to your basket, as before.  However now, if you click checkout on the basket screen and visit [http://localhost:8080/checkout](http://localhost:8080/checkout), you will instead be redirected to a login screen and forced to log in before being able to proceed.
 
-Enter the user name and password you configured in `SecurityConfig`: user `letsnosh` and password `noshing`.  You will then be taken to the checkout page, as before.  This time, however, you are logged in.
+![Checkout](../images/page_login.png)
+
+Enter the user name and password you configured in `SecurityConfig`: user `letsnosh` and password `noshing`.  You will then be taken to the checkout page, as before.  This time, however, you are logged in.  
+
+> **Note:** You may notice that the theme of Yummy Noodle Bar is missing on the login page. It's possible to use a custom login page, for purposes of brevity, this tutorial using Spring Security's default login page.
 
 ## Summary
 
