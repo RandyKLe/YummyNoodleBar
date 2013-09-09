@@ -1,6 +1,6 @@
 You've set up functionality for the Yummy Noodle Bar Web front end and your Life Preserver is looking great at this point:
 
-![Life Preserver showing Configuration Domain with Initial Components](../images/life-preserver-rest-domain-and-controllers-and-core-domain-and-config-domain-initial-zoom-out.png)
+![Life Preserver showing Web Domain with initial Components](../images/life-preserver-9.png)
 
 The problem is, at this point the Yummy Noodle Bar Web site is a little *too* functional; Orders need to be recorded against users, and only the user that placed an Order should be able to view and manage it.
 
@@ -8,8 +8,7 @@ The problem is, at this point the Yummy Noodle Bar Web site is a little *too* fu
 
 Once again, all changes here are constrained to the Configuration domain:
 
-![Life Preserver showing Configuration Domain with Initial Components](../images/life-preserver-initial-config-domain-focus.png)
-
+![Life Preserver showing Configuration Domain with Initial Components](../images/life-preserver-10.png)
 
 ### Authentication on the Web
 
@@ -223,7 +222,9 @@ Enter the user name and password you configured in `SecurityConfig`: user `letsn
 
 You have secured your application using Spring Security, and Yummy Noodle Bar is getting excited!
 
-See the current state of your application below LP
+See the current state of your application in the following Life Preserver diagram:
+
+![Life Preserver showing Configuration Domain with Initial Components](../images/life-preserver-11.png)
 
 Well done!  You have completed the adding of a Web front end to the Yummy Noodle Bar.
 
