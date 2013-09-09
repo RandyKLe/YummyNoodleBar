@@ -145,7 +145,7 @@ You have successfully captured some user information in a form, mapped this onto
 
 See the current state of your application in the following Life Preserver:
 
-![Life Preserver showing Web Domain with initial Components](../images/life-preserver-9.png)
+![Life Preserver showing Web Domain with initial Components](../images/life-preserver-8.png)
 
 Your application is a little too open with its information, however.  In the next section, you will learn how to apply security to your application and control who has access to which parts of your website, using Spring Security.
 

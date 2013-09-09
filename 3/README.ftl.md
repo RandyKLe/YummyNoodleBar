@@ -1,6 +1,6 @@
 Now that you have [written and tested a web controller](../2/), proudly added to your Life Preserver as shown below, it's time to bring the whole application together.
 
-![Life Preserver showing Web Controller](../images/life-preserver-4.png)
+![Life Preserver showing Web Controller](../images/life-preserver-4.5.png)
  
 ## Step 3: Configuring a basic application
 

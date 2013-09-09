@@ -1,6 +1,6 @@
 You've set up functionality for the Yummy Noodle Bar Web front end and your Life Preserver is looking great at this point:
 
-![Life Preserver showing Web Domain with initial Components](../images/life-preserver-9.png)
+![Life Preserver showing Web Domain with initial Components](../images/life-preserver-8.png)
 
 The problem is, at this point the Yummy Noodle Bar Web site is a little *too* functional; Orders need to be recorded against users, and only the user that placed an Order should be able to view and manage it.
 
@@ -8,7 +8,7 @@ The problem is, at this point the Yummy Noodle Bar Web site is a little *too* fu
 
 Once again, all changes here are constrained to the Configuration domain:
 
-![Life Preserver showing Configuration Domain with Initial Components](../images/life-preserver-10.png)
+![Life Preserver showing Configuration Domain with Initial Components](../images/life-preserver-6.png)
 
 ### Authentication on the Web
 

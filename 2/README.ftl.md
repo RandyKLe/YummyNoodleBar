@@ -131,6 +131,6 @@ Your Life Preserver now contains a new component, the SiteController, in the Web
 
 The full view of your current Life Preserver should look like the following:
 
-![Life Preserver Full showing Core Domain and Web Domain](../images/life-preserver-rest-domain-and-controllers-and-core-domain-zoom-out.png)
+![Life Preserver Full showing Core Domain and Web Domain](../images/life-preserver-4.5.png)
 
 [Next… Wiring Up and Deploying your Service](../3/)
