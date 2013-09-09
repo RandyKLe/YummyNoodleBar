@@ -748,7 +748,7 @@ Lastly, create the view for the order and its status.
 
 It should look like
 
-![Checkout](../images/page_basket.png)
+![Checkout](../images/page_order.png)
 
 ## Summary
 
