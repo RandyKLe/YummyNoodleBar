@@ -12,7 +12,7 @@ In the Core domain the concepts are captured as part of the internal ubiquitous 
 
 ### Components of the Core application domain for Yummy Noodle Bar
 
-![Life Preserver showing Core Domain](../images/life-preserver-core-domain-focus.png)
+![Life Preserver showing Core Domain](../images/life-preserver-2.5.png)
 
 Open the `initial` project. Under src/main/java/com/yummynoodlebar/core/domain, you see the components of the core, application-internal domain of Yummy Noodle Bar:
 
@@ -109,6 +109,6 @@ This separation allows an application to be built in a more scalable and testabl
 
 Congratulations!  You've determined the URLs and links between them that you are going to show to your users and captured those components in the following Life Preserver :
 
-![Life Preserver showing initial Web Domain](images/life-preserver-3.png)
+![Life Preserver showing initial Web Domain](../images/life-preserver-3.png)
 
 [Next… Implementing URLs and returning data](../2/)
