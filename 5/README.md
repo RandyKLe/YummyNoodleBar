@@ -1,6 +1,6 @@
 Now that you have [added rich views and a basket](../4/), as on your life preserver below, its time to add the ability to place an order.
 
-![Life Preserver Full showing Core Domain and Web Domain](../images/life-preserver-rest-domain-and-controllers-and-core-domain-zoom-out.png)
+![Life Preserver showing Web Domain with initial Components](../images/life-preserver-8.png)
 
 
 ## Step 5: Accepting user submitted data
@@ -199,8 +199,6 @@ public class CheckoutIntegrationTest {
 	}
 }
 ```
-
-TODO Describe setup of a test with a view resolver.
 
 `src/test/java/com/yummynoodlebar/web/controller/CheckoutIntegrationTest.java`
 ```java
@@ -754,7 +752,9 @@ It should look like
 
 You have successfully captured some user information in a form, mapped this onto a command object, validated it and combined it with the basket to create a fully functioning Order.
 
-See the current state of your application below LP
+See the current state of your application in the following Life Preserver:
+
+![Life Preserver showing Web Domain with initial Components](../images/life-preserver-9.png)
 
 Your application is a little too open with its information, however.  In the next section, you will learn how to apply security to your application and control who has access to which parts of your website, using Spring Security.
 
