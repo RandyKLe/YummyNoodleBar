@@ -2,7 +2,7 @@
 
 You've decided on your Web domains URLs and captured them on your Life Preserver as the Web domain's components:
 
-![Life Preserver Full showing Core Domain and Web Domain](../images/life-preserver-rest-domain-and-core-domain-zoom-out.png)
+![Life Preserver Full showing Core Domain and Web Domain](../images/life-preserver-3.png)
 
 It's time to implement your Yummy Noodle Bar Web front end. The first step in building a service with Spring MVC is to construct and test one or more controllers that are responsible for handling each incoming HTTP request as you defined in the previous step.
 
@@ -125,9 +125,9 @@ The controller is correctly returning Menu from a service and transforming it in
 
 Congratulations! You've created a controller that implements a portion of your Website. You've tested that controller using 'MockMVC' outside of a container to confirm that the handler mappings work.
 
-Your Life Preserver now contains a new component, the SiteController, in the Webs domain:
+Your Life Preserver now contains a new component, the SiteController, in the Web domain:
 
-![Life Preserver showing Web Controllers](../images/life-preserver-rest-controllers-focus.png)
+![Life Preserver showing Web Controller](../images/life-preserver-4.png)
 
 The full view of your current Life Preserver should look like the following:
 
