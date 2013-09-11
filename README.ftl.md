@@ -41,7 +41,7 @@ While there are many build systems, this tutorial is built using [Gradle][gs-gra
 For example, if you want to check out the initial code set:
 
 ```sh
-$ git clone git@github.com:spring-guides/tut-web.git
+$ git clone https://github.com/spring-guides/tut-web.git
 $ cd tut-web/initial
 $ ./gradlew clean test
 ```
