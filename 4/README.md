@@ -206,6 +206,68 @@ Specifies that a new instance of the bean will be created for every user session
 
 The result of this is that you may inject the `Basket` as a dependency using `@Autowired` and can use normally. Calls will be routed to the correct instance based on the current session by the automatically generated proxy.
 
+This references a new concept in the web domain, `MenuItem`.  Create `MenuItem` like so
+
+`src/main/java/com/yummynoodlebar/web/domain/MenuItem.java`
+```java
+package com.yummynoodlebar.web.domain;
+
+import java.math.BigDecimal;
+
+import org.springframework.beans.BeanUtils;
+
+import com.yummynoodlebar.events.menu.MenuItemDetails;
+
+public class MenuItem {
+
+  private String id;
+  private String name;
+
+  private BigDecimal cost;
+
+  private int minutesToPrepare;
+
+  public String getId() {
+    return id;
+  }
+
+  public void setId(String id) {
+    this.id = id;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public BigDecimal getCost() {
+    return cost;
+  }
+
+  public void setCost(BigDecimal cost) {
+    this.cost = cost;
+  }
+
+  public int getMinutesToPrepare() {
+    return minutesToPrepare;
+  }
+
+  public void setMinutesToPrepare(int minutesToPrepare) {
+    this.minutesToPrepare = minutesToPrepare;
+  }
+
+  public static MenuItem fromMenuDetails(MenuItemDetails menuItemDetails) {
+	MenuItem menuItem = new MenuItem();
+	BeanUtils.copyProperties(menuItemDetails, menuItem);
+	return menuItem;
+  }
+
+}
+```
+
 Next, you need to update the SiteController to take advantage of the new `Basket`
 Update `SiteController` to read
 
@@ -968,7 +1030,7 @@ Now, run the application:
     ./gradlew tomcatRunWar
 ```
 
-And visit (http://localhost:8080/)[http://localhost:8080]. You will see a rich HTML page, including the site url, and the basket page.
+And visit [http://localhost:8080/](http://localhost:8080). You will see a rich HTML page, including the site url, and the basket page.
 
 Once you add a couple of items to the basket, it will look similar to:
 
