@@ -402,6 +402,7 @@ apply plugin: 'propdeps-maven'
 apply plugin: 'propdeps-idea'
 apply plugin: 'propdeps-eclipse'
 apply plugin: 'eclipse-wtp'
+apply plugin: 'idea'
 
 println "PROJECT=" + project.name
 
