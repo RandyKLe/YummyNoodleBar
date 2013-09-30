@@ -29,7 +29,7 @@ First you add Spring Security dependencies to the project, by adding the followi
 repositories {
   mavenCentral()
 
-  maven { url 'http://repo.springsource.org/milestone/'}
+  maven { url 'http://repo.spring.io/milestone/'}
 }
 ```
 
