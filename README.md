@@ -1,5 +1,4 @@
-
-In this tutorial you'll learn to use Spring to create production strength Web applications.
+In this tutorial you'll learn to use Spring to create production-strength web applications.
 
 ## Spring and the Web
 
