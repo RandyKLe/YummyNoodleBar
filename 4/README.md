@@ -426,7 +426,7 @@ Now that Thymeleaf is available, create a new file `home.html`
         </p>
 
         <p>
-            <a class="btn btn-primary btn-large" href="http://www.simplicityitself.com/">Learn more about us</a>
+            <a class="btn btn-primary btn-large" href="http://spring.io/">Learn more about Spring</a>
             <a th:if="${basket.size &gt; 0}"
                class="btn btn-primary btn-large"
                th:href="@{/showBasket}">Look in your basket</a>
@@ -1008,7 +1008,7 @@ Create a new html file:
             <li class="nav-header">Navigation could go here</li>
             <li><a href="http://www.gopivotal.com/">Pivotal, Inc</a></li>
             <li><a href="http://www.springsource.org/spring-xd">Spring XD</a></li>
-            <li><a href="http://www.simplicityitself.com/">Simplicity</a></li>
+            <li><a href="http://spring.io">Spring</a></li>
         </ul>
     </div>
 </div>
